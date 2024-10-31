@@ -1,0 +1,61 @@
+datasource db {
+  provider = "postgresql" // ou "mysql" si vous utilisez MySQL
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Customer {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  nom   String
+  role  Role    // Enum pour admin/client
+  orders Order[]
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  nom         String
+  description String
+  image       String   // Stocke l'URL ou le chemin de l'image
+  prix        Float
+  type        String[] // Tableau de types
+  base        String[] // Tableau de bases
+  taille      String[] // Tableau de tailles
+  barre       String[] // Tableau de barres
+  orders      Order[]
+}
+
+model Order {
+  id             Int      @id @default(autoincrement())
+  status         String   // 'delivered' or 'pending'
+  image          String   // Product image URL or path
+  qty            Int      // Quantity ordered
+  email          String   // FK from Customer
+  name           String   // FK from Customer's name
+  productId      Int      // FK from Product
+
+  // Fields to store specific selections from Product array fields
+  selectedType   String   // Selected value from Product.type
+  selectedBase   String   // Selected value from Product.base
+  selectedTaille String   // Selected value from Product.taille
+  selectedBarre  String   // Selected value from Product.barre
+
+  product        Product  @relation(fields: [productId], references: [id])
+  customer       Customer @relation(fields: [email], references: [email])
+
+  @@index([productId])
+  @@index([email])
+}
+
+enum Role {
+  admin
+  client
+}
+
+enum OrderStatus {
+  livree
+  attente
+}
