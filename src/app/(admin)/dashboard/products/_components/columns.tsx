@@ -54,9 +54,9 @@ export const columns: ColumnDef<Product>[] = [
     ),
   },
   {
-    accessorKey: "name",
-    header: "Name",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
+    accessorKey: "nom",
+    header: "Nom",
+    cell: ({ row }) => <div className="capitalize">{row.getValue("nom")}</div>,
   },
   {
     accessorKey: "description",
@@ -66,14 +66,79 @@ export const columns: ColumnDef<Product>[] = [
     ),
   },
   {
-    accessorKey: "price",
-    header: () => <div className="text-right">Price</div>,
+    accessorKey: "prix",
+    header: () => <div className="text-right">Prix</div>,
     cell: ({ row }) => {
       return (
-        <div className="text-right font-medium">{row.getValue("price")}</div>
+        <div className="text-right font-medium">{row.getValue("prix")}</div>
       );
     },
   },
+  {
+    accessorKey: "type",
+    header: "Type",
+    cell: ({ row }) => {
+        const values = row.getValue("type") as string[]; // Cast the value to string[]
+        return (
+            <div className="flex flex-wrap gap-2">
+                {values.map((item, index) => (
+                    <span key={index} className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                        {item}
+                    </span>
+                ))}
+            </div>
+      );
+    },
+  },
+  {
+    accessorKey: "base",
+    header: "Base",
+    cell: ({ row }) => {
+        const values = row.getValue("base") as string[]; // Cast the value to string[]
+        return (
+            <div className="flex flex-wrap gap-2">
+                {values.map((item, index) => (
+                    <span key={index} className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                        {item}
+                    </span>
+                ))}
+            </div>
+        );
+    },
+},
+{
+  accessorKey: "taille",
+  header: "Taille",
+  cell: ({ row }) => {
+      const values = row.getValue("taille") as string[]; // Cast the value to string[]
+      return (
+          <div className="flex flex-wrap gap-2">
+              {values.map((item, index) => (
+                  <span key={index} className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                      {item}
+                  </span>
+              ))}
+          </div>
+      );
+  },
+},
+{
+  accessorKey: "barre",
+  header: "Barre",
+  cell: ({ row }) => {
+      const values = row.getValue("type") as string[]; // Cast the value to string[]
+      return (
+          <div className="flex flex-wrap gap-2">
+              {values.map((item, index) => (
+                  <span key={index} className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                      {item}
+                  </span>
+              ))}
+          </div>
+      );
+  },
+},
+
   {
     id: "actions",
     enableHiding: false,

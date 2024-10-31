@@ -67,10 +67,10 @@ export default function ProductsTable({data}:{data:Product[]}) {
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          placeholder="Filter products..."
+          value={(table.getColumn("nom")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn("nom")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

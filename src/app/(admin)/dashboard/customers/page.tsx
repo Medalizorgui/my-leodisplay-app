@@ -5,10 +5,10 @@ import { Customer, PrismaClient } from '@prisma/client';
 const db = new PrismaClient();
 
 export default async function page() {
-  const allCusoemrs = await db.customer.findMany() as Customer[]; 
+  const allCustemrs = await db.customer.findMany() as Customer[]; 
   return (
     <main className="px-5">
-      <ProductsTable data={allCusoemrs}/>
+      <ProductsTable data={allCustemrs}/>
     </main>
   )
 }

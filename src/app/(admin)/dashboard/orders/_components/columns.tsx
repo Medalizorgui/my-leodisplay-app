@@ -60,52 +60,52 @@ export const columns: ColumnDef<Order>[] = [
         ),
     },
     {
-        accessorKey: "date",
-        header: "Date",
+        accessorKey: "email",
+        header: "Email",
         cell: ({ row }) => (
-          <div className="capitalize">{row.getValue("date")}</div>
+          <div className="capitalize">{row.getValue("email")}</div>
         ),
     },
     {
-      accessorKey: "product",
-      header: "Product",
+      accessorKey: "productId",
+      header: "ProductId",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("product")}</div>
+        <div className="capitalize">{row.getValue("productId")}</div>
       ),
     },
     {
-      accessorKey: "type",
-      header: "Type",
+      accessorKey: "selectedBarre",
+      header: "SelectedBarre",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("type")}</div>
+        <div className="capitalize">{row.getValue("selectedBarre")}</div>
       ),
     },
     {
-      accessorKey: "size",
-      header: "Size",
+      accessorKey: "selectedTaille",
+      header: "SelectedTaille",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("size")}</div>
+        <div className="capitalize">{row.getValue("selectedTaille")}</div>
+      ),
+    },
+    {
+      accessorKey: "selectedBase",
+      header: "SelectedBase",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("selectedBase")}</div>
+      ),
+    },
+    {
+      accessorKey: "selectedType",
+      header: "selectedType",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("selectedType")}</div>
       ),
     },
     {
       accessorKey: "qty",
-      header: "Quantity",
+      header: "Qty",
       cell: ({ row }) => (
         <div className="capitalize">{row.getValue("qty")}</div>
-      ),
-    },
-    {
-      accessorKey: "metalBar",
-      header: "Metal Bar",
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("metalBar")? "true" : "false"}</div>
-      ),
-    },
-    {
-      accessorKey: "base",
-      header: "Base",
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("base")}</div>
       ),
     },
     {

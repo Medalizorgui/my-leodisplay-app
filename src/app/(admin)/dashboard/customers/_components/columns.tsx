@@ -44,10 +44,10 @@ export const columns: ColumnDef<Customer>[] = [
       ),
     },
     {
-        accessorKey: "name",
-        header: "Name",
+        accessorKey: "nom",
+        header: "Nom",
         cell: ({ row }) => (
-          <div className="capitalize">{row.getValue("name")}</div>
+          <div className="capitalize">{row.getValue("nom")}</div>
         ),
     },
     {
@@ -55,6 +55,13 @@ export const columns: ColumnDef<Customer>[] = [
       header: "Email",
       cell: ({ row }) => (
         <div className="capitalize">{row.getValue("email")}</div>
+      ),
+    },
+    {
+      accessorKey: "role",
+      header: "Role",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("role")}</div>
       ),
     },
     {
