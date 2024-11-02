@@ -53,6 +53,12 @@ export default function Header() {
         >
           Customers
         </Link>
+        <Link
+          href="/dashboard/sign-up"
+          className="text-muted-foreground transition-colors hover:text-foreground"
+        >
+          Creation
+        </Link>
       </nav>
       <Sheet>
         <SheetTrigger asChild>

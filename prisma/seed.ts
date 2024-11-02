@@ -1,24 +1,30 @@
-// prisma/seed.ts
-
 const { PrismaClient } = require('@prisma/client');
+const bcrypt = require('bcrypt');
 
 const prisma = new PrismaClient();
 
 async function main() {
+  const hashedPasswordAdmin = await bcrypt.hash('admin-password', 10);
+  const hashedPasswordClient = await bcrypt.hash('client-password', 10);
+
   // Create customers
   await prisma.customer.createMany({
-    data: [ 
+    data: [
       {
         id: 1,
         email: 'admin@example.com',
         nom: 'Admin User',
         role: 'admin',
+        phone: '1234567890',  // Add a phone number if needed
+        password: hashedPasswordAdmin,  // Use hashed password
       },
       {
         id: 2,
         email: 'client@example.com',
         nom: 'Client User',
         role: 'client',
+        phone: '0987654321',  // Add a phone number if needed
+        password: hashedPasswordClient,  // Use hashed password
       },
     ],
   });
@@ -30,7 +36,7 @@ async function main() {
         id: 1,
         nom: 'WIND FLAG',
         description: 'Description of WIND FLAG',
-        image: 'imageA.jpg',
+        image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp',
         prix: 100.0,
         type: ['Courbé', 'Droit','Incliné','Rectangulaire'],
         base: ['Water', 'Beton','Metal 7kg','Metal 7.5kg','Metal 10kg'],
@@ -41,7 +47,7 @@ async function main() {
         id: 2,
         nom: 'STAND PARAPLUIE',
         description: 'Description of STAND PARAPLUIE',
-        image: 'imageB.jpg',
+        image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp',
         prix: 200.0,
         type: ['Plat', 'Curve'],
         base: [''],
@@ -52,7 +58,7 @@ async function main() {
         id: 3,
         nom: 'STAND MODULAIRE',
         description: 'Description of STAND MODULAIRE',
-        image: 'imageC.jpg',
+        image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp',
         prix: 300.0,
         type: [''],
         base: [''],
@@ -68,7 +74,7 @@ async function main() {
       {
         id: 1,
         status: 'attente',
-        image: 'imageA.jpg',
+        image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp',
         qty: 2,
         email: 'client@example.com',
         name: 'Client User',
@@ -81,7 +87,7 @@ async function main() {
       {
         id: 2,
         status: 'attente',
-        image: 'imageB.jpg',
+        image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp',
         qty: 1,
         email: 'client@example.com',
         name: 'Client User',

@@ -8,11 +8,13 @@ generator client {
 }
 
 model Customer {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  nom   String
-  role  Role    // Enum pour admin/client
-  orders Order[]
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  nom      String
+  role     Role    // Enum pour admin/client
+  phone    String?
+  password String  @default("")  // New password field
+  orders    Order[]
 }
 
 model Product {
