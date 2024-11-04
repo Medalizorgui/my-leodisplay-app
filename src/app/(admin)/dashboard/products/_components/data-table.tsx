@@ -13,7 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import {  ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -33,15 +33,15 @@ import {
 } from "@/components/ui/table";
 import { columns } from "./columns";
 import { Product } from "@prisma/client";
+import { useRouter } from "next/router"; // Import useRouter
+import Link from "next/link";
+import CreateProduct from "./create";
 
-
-export default function ProductsTable({data}:{data:Product[]}) {
+export default function ProductsTable({ data }: { data: Product[] }) {
+  //const router = useRouter(); // Initialize router
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
@@ -63,6 +63,11 @@ export default function ProductsTable({data}:{data:Product[]}) {
     },
   });
 
+  const handleCreateProduct = () => {
+    // Navigate to the creation page
+    //router.push("/dashboard/products/create"); // Change to your actual creation page path
+  };
+
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
@@ -74,6 +79,7 @@ export default function ProductsTable({data}:{data:Product[]}) {
           }
           className="max-w-sm"
         />
+        <CreateProduct />   
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
@@ -111,10 +117,7 @@ export default function ProductsTable({data}:{data:Product[]}) {
                     <TableHead key={header.id}>
                       {header.isPlaceholder
                         ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                        : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   );
                 })}
@@ -124,26 +127,17 @@ export default function ProductsTable({data}:{data:Product[]}) {
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
+                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
+                <TableCell colSpan={columns.length} className="h-24 text-center">
                   No results.
                 </TableCell>
               </TableRow>

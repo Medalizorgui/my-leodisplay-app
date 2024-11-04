@@ -22,7 +22,7 @@ model Product {
   nom         String
   description String
   image       String   // Stocke l'URL ou le chemin de l'image
-  prix        Float
+  prix        String
   type        String[] // Tableau de types
   base        String[] // Tableau de bases
   taille      String[] // Tableau de tailles

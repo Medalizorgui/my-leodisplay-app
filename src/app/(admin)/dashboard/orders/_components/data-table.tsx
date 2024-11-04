@@ -13,7 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import {  ChevronDown} from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -30,11 +30,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";;
+} from "@/components/ui/table";
 import { columns } from "./columns";
 import { Order } from "@prisma/client";
 
-export default function ProductsTable({ data }: {data : Order[]}) {
+export default function ProductsTable({ data }: { data: Order[] }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -61,6 +61,12 @@ export default function ProductsTable({ data }: {data : Order[]}) {
       rowSelection,
     },
   });
+  const handleCreateOrder = () => {
+    // Logic for creating a new product
+    console.log("Create product button clicked");
+    // For example, open a modal or navigate to a product creation page
+  };
+
 
   return (
     <div className="w-full">
@@ -73,9 +79,12 @@ export default function ProductsTable({ data }: {data : Order[]}) {
           }
           className="max-w-sm"
         />
+        <Button variant="outline" onClick={handleCreateOrder} className="ml-2">
+          Create
+        </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
+            <Button  className="ml-auto">
               Columns <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>

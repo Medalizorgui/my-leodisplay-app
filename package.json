@@ -10,6 +10,7 @@
     "seed": "ts-node --require tsconfig-paths/register prisma/seed.ts"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.1",
     "@prisma/client": "^5.21.1",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-checkbox": "^1.1.2",
@@ -25,17 +26,25 @@
     "@supabase/ssr": "^0.5.1",
     "@supabase/supabase-js": "^2.46.1",
     "@tanstack/react-table": "^8.20.5",
+    "add": "^2.0.6",
     "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "dialog": "^0.3.1",
     "lucide-react": "^0.454.0",
     "next": "15.0.2",
     "next-auth": "^4.24.10",
     "prisma": "^5.21.1",
     "react": "19.0.0-rc-02c0e824-20241028",
     "react-dom": "19.0.0-rc-02c0e824-20241028",
+    "react-hook-form": "^7.53.1",
+    "react-hot-toast": "^2.4.1",
+    "shadcn": "^2.1.4",
+    "swr": "^2.2.5",
     "tailwind-merge": "^2.5.4",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "textarea": "^0.3.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",

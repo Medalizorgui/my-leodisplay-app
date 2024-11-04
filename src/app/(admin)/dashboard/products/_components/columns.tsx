@@ -11,6 +11,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Product } from "@prisma/client";
+import DeleteProduct from "./delete";
+import UpdateProduct from "./update";
 
 export const columns: ColumnDef<Product>[] = [
   {
@@ -126,7 +128,7 @@ export const columns: ColumnDef<Product>[] = [
   accessorKey: "barre",
   header: "Barre",
   cell: ({ row }) => {
-      const values = row.getValue("type") as string[]; // Cast the value to string[]
+      const values = row.getValue("barre") as string[]; // Cast the value to string[]
       return (
           <div className="flex flex-wrap gap-2">
               {values.map((item, index) => (
@@ -144,6 +146,7 @@ export const columns: ColumnDef<Product>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const payment = row.original;
+      const productId = payment.id.toString();
 
       return (
         <DropdownMenu>
@@ -156,8 +159,12 @@ export const columns: ColumnDef<Product>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem>
+              <DeleteProduct id={productId} />
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <UpdateProduct product={payment} />
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
