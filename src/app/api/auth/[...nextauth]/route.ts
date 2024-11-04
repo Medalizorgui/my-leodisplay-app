@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { prisma } from '@/lib/prisma'; // Adjust path as necessary
+import  prisma  from '@/lib/prisma'; // Adjust path as necessary
 import { compare } from 'bcrypt';
 
 // Define the User type locally in this file with `id` as a string
