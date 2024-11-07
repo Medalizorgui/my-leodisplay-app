@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/table";
 import { columns } from "./columns";
 import { Order } from "@prisma/client";
+import CreateOrder from "./create";
 
 export default function ProductsTable({ data }: { data: Order[] }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -63,7 +64,7 @@ export default function ProductsTable({ data }: { data: Order[] }) {
   });
   const handleCreateOrder = () => {
     // Logic for creating a new product
-    console.log("Create product button clicked");
+    console.log("Create order button clicked");
     // For example, open a modal or navigate to a product creation page
   };
 
@@ -79,9 +80,7 @@ export default function ProductsTable({ data }: { data: Order[] }) {
           }
           className="max-w-sm"
         />
-        <Button variant="outline" onClick={handleCreateOrder} className="ml-2">
-          Create
-        </Button>
+          <CreateOrder />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button  className="ml-auto">

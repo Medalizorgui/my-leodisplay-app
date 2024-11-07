@@ -29,9 +29,9 @@ model Product {
   barre       String[] // Tableau de barres
   orders      Order[]
 }
-
 model Order {
   id             Int      @id @default(autoincrement())
+  orderGroupId   Int      // Group ID to identify products in the same order
   status         String   // 'delivered' or 'pending'
   image          String   // Product image URL or path
   qty            Int      // Quantity ordered
@@ -50,6 +50,7 @@ model Order {
 
   @@index([productId])
   @@index([email])
+  @@index([orderGroupId])
 }
 
 enum Role {

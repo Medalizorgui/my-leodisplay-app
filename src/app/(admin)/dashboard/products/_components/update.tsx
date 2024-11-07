@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 
 import ProductForm from "./ProductForm"; // Adjust import to your product form
-import { type ProductSchema } from "@/lib/zod"; // Adjust to your schema for products
+import { type ProductSchema } from "@/lib/product/zod"; // Adjust to your schema for products
 import { Product } from "@prisma/client"; // Adjust if your product model is defined differently
 import { Pencil1Icon } from "@radix-ui/react-icons";
 

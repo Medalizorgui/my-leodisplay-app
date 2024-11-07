@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma'; // Ensure this path is correct
-import { productSchema } from '@/lib/zod'; // Adjust as necessary
+import { productSchema } from '@/lib/product/zod'; // Adjust as necessary
 import { NextRequest, NextResponse } from 'next/server';
 
 // GET method to retrieve all products

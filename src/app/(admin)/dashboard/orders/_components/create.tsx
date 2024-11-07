@@ -1,4 +1,5 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,43 +10,46 @@ import {
 } from "@/components/ui/dialog";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { productSchema, type ProductSchema } from "@/lib/product/zod";
+import { orderSchema, type OrderSchema } from "@/lib/order/zod"; // Import the OrderSchema
 import { useState } from "react";
-import ProductForm from "./ProductForm";
+import OrderForm from "./OrderForm"; // This is your custom order form component
 
-export default function CreateProduct() {
+export default function CreateOrder() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isDialogOpen, setDialogOpen] = useState(false);
 
-  const form = useForm<ProductSchema>({
-    resolver: zodResolver(productSchema),
+  const form = useForm<OrderSchema>({
+    resolver: zodResolver(orderSchema),
     defaultValues: {
-      nom: "",
-      description: "",
+      orderGroupId: 1, // Add default value
+      status: "pending", // default to 'pending'
       image: "",
-      prix: "",
-      type: [],
-      base: [],
-      taille: [],
-      barre: [],
+      qty: 1,
+      email: "",
+      name: "",
+      productId: 1, // Add default value
+      selectedType: "",
+      selectedBase: "",
+      selectedTaille: "",
+      selectedBarre: "",
     },
   });
 
-  const onSubmit = async (data: ProductSchema) => {
+  const onSubmit = async (orderData: OrderSchema) => {
     setIsSubmitting(true);
     setErrorMessage(""); // Reset error message on new submission
     try {
-      const response = await fetch("/api/products", {
+      const response = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(orderData),
       });
       console.log(response.status);
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to create product");
+        throw new Error(errorData.message || "Failed to create order");
       }
 
       // Handle JSON or empty response
@@ -56,10 +60,10 @@ export default function CreateProduct() {
 
       console.log("response body", responseData);
 
-      form.reset();
-      setDialogOpen(false);
+      form.reset(); // Reset form after successful submission
+      setDialogOpen(false); // Close the dialog
     } catch (error) {
-      console.error("Error creating product:", error);
+      console.error("Error creating order:", error);
       setErrorMessage(
         error instanceof Error ? error.message : "An unexpected error occurred"
       );
@@ -81,22 +85,25 @@ export default function CreateProduct() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] bg-white">
         <DialogHeader>
-          <DialogTitle>Create New Product</DialogTitle>
+          <DialogTitle>Create New Order</DialogTitle>
         </DialogHeader>
         {errorMessage && (
           <div className="text-red-500 text-sm mb-4">{errorMessage}</div>
         )}
-        <ProductForm
+        <OrderForm
           defaultValues={{
-            nom: "",
-            description: "",
+            orderGroupId: 1, // Add default value
+            status: "pending", // default to 'pending'
             image: "",
-            prix: "",
-            type: [],
-            base: [],
-            taille: [],
-            barre: [],
-          }}
+            qty: 1,
+            email: "",
+            name: "",
+            productId: 1, // Add default value
+            selectedType: "",
+            selectedBase: "",
+            selectedTaille: "",
+            selectedBarre: "",
+          }} // Pass defaultValues to OrderForm
           onSubmit={onSubmit}
           submitButtonText="Create"
           isSubmitting={isSubmitting}

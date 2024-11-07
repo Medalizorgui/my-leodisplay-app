@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 // Define the schema for product validation
-import { productSchema, type ProductSchema } from "@/lib/zod";
+import { productSchema, type ProductSchema } from "@/lib/product/zod";
 
 interface ProductFormProps {
   defaultValues: ProductSchema;

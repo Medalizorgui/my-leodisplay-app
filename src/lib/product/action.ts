@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { prisma } from "@/lib/prisma";
+import  prisma  from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -10,7 +10,10 @@ const ProductSchema = z.object({
   nom: z.string().min(1, { message: "Product name is required" }),
   description: z.string().min(1, { message: "Description is required" }),
   image: z.string().url({ message: "Image must be a valid URL" }),
-  prix: z.number().positive({ message: "Price must be a positive number" }),
+  prix: z.string().refine(
+    (val) => !isNaN(parseFloat(val)) && parseFloat(val) > 0,
+    { message: "Price must be a positive number" }
+  ),
   type: z.array(z.string()).nonempty({ message: "At least one type is required" }),
   base: z.array(z.string()).optional(),
   taille: z.array(z.string()).optional(),

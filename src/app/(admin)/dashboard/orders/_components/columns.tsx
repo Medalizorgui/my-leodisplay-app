@@ -44,6 +44,13 @@ export const columns: ColumnDef<Order>[] = [
       ),
     },
     {
+      accessorKey: "orderGroupId",  // New Column for Order Group ID
+      header: "Order Group ID",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("orderGroupId")}</div>
+      ),
+    },
+    {
       accessorKey: "image",
       header: "Image",
       cell: ({ row }) => (
@@ -68,35 +75,35 @@ export const columns: ColumnDef<Order>[] = [
     },
     {
       accessorKey: "productId",
-      header: "ProductId",
+      header: "Product ID",
       cell: ({ row }) => (
         <div className="capitalize">{row.getValue("productId")}</div>
       ),
     },
     {
       accessorKey: "selectedBarre",
-      header: "SelectedBarre",
+      header: "Selected Barre",
       cell: ({ row }) => (
         <div className="capitalize">{row.getValue("selectedBarre")}</div>
       ),
     },
     {
       accessorKey: "selectedTaille",
-      header: "SelectedTaille",
+      header: "Selected Taille",
       cell: ({ row }) => (
         <div className="capitalize">{row.getValue("selectedTaille")}</div>
       ),
     },
     {
       accessorKey: "selectedBase",
-      header: "SelectedBase",
+      header: "Selected Base",
       cell: ({ row }) => (
         <div className="capitalize">{row.getValue("selectedBase")}</div>
       ),
     },
     {
       accessorKey: "selectedType",
-      header: "selectedType",
+      header: "Selected Type",
       cell: ({ row }) => (
         <div className="capitalize">{row.getValue("selectedType")}</div>
       ),
@@ -133,7 +140,7 @@ export const columns: ColumnDef<Order>[] = [
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>Edit</DropdownMenuItem>
-              <DropdownMenuItem>Supprimer</DropdownMenuItem>
+              <DropdownMenuItem>Delete</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );
