@@ -11,7 +11,9 @@ import {
 import { ColumnDef } from "@tanstack/react-table";
 import { Order } from "@prisma/client";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, DeleteIcon, MoreHorizontal } from "lucide-react";
+import UpdateOrder from "./update";
+import DeleteOrder from "./delete";
 
 export const columns: ColumnDef<Order>[] = [
     {
@@ -127,6 +129,7 @@ export const columns: ColumnDef<Order>[] = [
       enableHiding: false,
       cell: ({ row }) => {
         const payment = row.original;
+        const orderId = payment.id.toString();
   
         return (
           <DropdownMenu>
@@ -139,8 +142,12 @@ export const columns: ColumnDef<Order>[] = [
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Edit</DropdownMenuItem>
-              <DropdownMenuItem>Delete</DropdownMenuItem>
+              <DropdownMenuItem>
+                <DeleteOrder orderId={orderId}/>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <UpdateOrder order={payment}/>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );

@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 // Define the schema for order data validation
 const OrderSchema = z.object({
   orderGroupId: z.number().int().positive({ message: "Order group ID must be a positive integer" }),
-  status: z.enum(["delivered", "pending"], { message: "Status must be 'delivered' or 'pending'" }),
+  status: z.enum(["livree", "attente"], { message: "Status must be 'delivered' or 'pending'" }),
   image: z.string().url({ message: "Image must be a valid URL" }),
   qty: z.number().int().positive({ message: "Quantity must be a positive integer" }),
   email: z.string().email({ message: "Invalid email format" }),

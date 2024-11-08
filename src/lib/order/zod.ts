@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const orderSchema = z.object({
     orderGroupId: z.number().int().positive(),
-    status: z.enum(["delivered", "pending"]),
+    status: z.enum(["livree", "attente"]),
     image: z.string().optional(),
     qty: z.number().int().positive(),
     email: z.string().email(),

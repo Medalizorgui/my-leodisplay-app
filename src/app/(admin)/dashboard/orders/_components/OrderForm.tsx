@@ -18,7 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 import UploadComponent from "@/components/image-upload"; // Assuming you have a separate upload component
 import { orderSchema, type OrderSchema } from "@/lib/order/zod";
 
-import ImageUploader from './ImageUploader';
+import ImageUploader from "./ImageUploader";
 
 // OrderFormProps interface defines the structure for the props passed into the component
 interface OrderFormProps {
@@ -50,32 +50,28 @@ export default function OrderForm({
     }
   }, [imageUrl, form]);
 
-
   // Callback to handle image URL change from ImageUploader
   const handleImageUrlChange = (url: string) => {
     console.log("ImageUploader provided URL:", url); // Log to ensure the URL is being passed
     setImageUrl(url);
   };
 
-
   // Submit handler that processes form data before submission
   const OnSubmit = async (data: OrderSchema) => {
     if (!imageUrl) {
       console.error("No image uploaded");
     }
-    console.log('Submitting order data:');
+    console.log("Submitting order data:");
     console.log(form.getValues());
 
-    await onSubmit( {
+    await onSubmit({
       ...data,
-      image: imageUrl || '', // Ensure the image field is set, even if empty
+      image: imageUrl || "", // Ensure the image field is set, even if empty
     });
-    
-
   };
 
   // Log the updated imageUrl whenever it changes
-  
+
   return (
     <div className="h-96 overflow-y-auto">
       {/* Form component that takes care of field validation and state */}
@@ -177,9 +173,16 @@ export default function OrderForm({
               <FormItem>
                 <FormLabel>Status</FormLabel>
                 <FormControl>
-                  <select {...field} className="select">
-                    <option value="pending">Pending</option>
-                    <option value="delivered">Delivered</option>
+                  <select
+                    {...field}
+                    className="select"
+                    onChange={(e) =>
+                      field.onChange(e.target.value as "attente" | "livree")
+                    }
+                    value={field.value ?? "attente"} // Set a default if `field.value` is undefined
+                  >
+                    <option value="attente">attente</option>
+                    <option value="livree">livree</option>
                   </select>
                 </FormControl>
                 <FormMessage />
@@ -254,7 +257,11 @@ export default function OrderForm({
           />
 
           {/* Submit button */}
-          <Button disabled={!imageUrl || isSubmitting} className="w-full" type="submit">
+          <Button
+            disabled={!imageUrl || isSubmitting}
+            className="w-full"
+            type="submit"
+          >
             {isSubmitting ? (
               <div className="absolute inset-0 flex items-center justify-center bg-primary/50 rounded-md">
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>

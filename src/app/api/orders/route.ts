@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     // Create a new order using Prisma
     const order = await prisma.order.create({
       data: {
-        status: parsedData.status || "pending",
+        status: parsedData.status || "attente",
         image: parsedData.image || "",
         qty: parsedData.qty || 1,
         orderGroupId: parsedData.orderGroupId || 1, // Default to 1 if not provided
