@@ -90,7 +90,7 @@ export default function UpdateOrder({ order }: { order: Order & { id: number } }
                         qty: order.qty,
                         email: order.email,
                         name: order.name,
-                        productId: order.productId,
+                        productNom: order.productNom,
                         selectedType: order.selectedType || "",
                         selectedBase: order.selectedBase || "",
                         selectedTaille: order.selectedTaille || "",

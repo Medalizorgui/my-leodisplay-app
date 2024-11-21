@@ -24,7 +24,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
   const { nom, description, image, prix, type, base, taille, barre } = product;
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 ">
       <Card className="overflow-hidden">
         <CardContent className="p-6">
           <div className="grid gap-6 md:grid-cols-2">

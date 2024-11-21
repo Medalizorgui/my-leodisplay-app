@@ -108,16 +108,13 @@ export default function OrderForm({
           {/* Product ID input field */}
           <FormField
             control={form.control}
-            name="productId"
+            name="productNom"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Product ID</FormLabel>
+                <FormLabel>Product Nom</FormLabel>
                 <FormControl>
                   <Input
-                    type="number"
-                    {...field}
-                    placeholder="Product ID..."
-                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  {...field} placeholder="Product Nom"
                   />
                 </FormControl>
                 <FormMessage />

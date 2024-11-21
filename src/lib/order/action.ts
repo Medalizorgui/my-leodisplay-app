@@ -13,7 +13,7 @@ const OrderSchema = z.object({
   qty: z.number().int().positive({ message: "Quantity must be a positive integer" }),
   email: z.string().email({ message: "Invalid email format" }),
   name: z.string().min(1, { message: "Customer's name is required" }),
-  productId: z.number().int().positive({ message: "Product ID must be a valid positive integer" }),
+  productNom: z.string().min(1,{message: "Product name is required"}),
 
   // Validating selected values from the product options
   selectedType: z.string().min(1, { message: "Product type selection is required" }),
@@ -44,7 +44,7 @@ export const saveOrder = async (prevState: any, formData: FormData) => {
         qty: validatedFields.data.qty,
         email: validatedFields.data.email,
         name: validatedFields.data.name,
-        productId: validatedFields.data.productId,
+        productNom: validatedFields.data.productNom,
         selectedType: validatedFields.data.selectedType,
         selectedBase: validatedFields.data.selectedBase,
         selectedTaille: validatedFields.data.selectedTaille,

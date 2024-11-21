@@ -23,12 +23,12 @@ export default function CreateOrder() {
     resolver: zodResolver(orderSchema),
     defaultValues: {
       orderGroupId: 1, // Add default value
-      status: "pending", // default to 'pending'
+      status: "attente", // default to 'pending'
       image: "",
       qty: 1,
       email: "",
       name: "",
-      productId: 1, // Add default value
+      productNom: "", // Add default value
       selectedType: "",
       selectedBase: "",
       selectedTaille: "",
@@ -93,12 +93,12 @@ export default function CreateOrder() {
         <OrderForm
           defaultValues={{
             orderGroupId: 1, // Add default value
-            status: "pending", // default to 'pending'
+            status: "attente", // default to 'pending'
             image: "",
             qty: 1,
             email: "",
             name: "",
-            productId: 1, // Add default value
+            productNom: "", // Add default value
             selectedType: "",
             selectedBase: "",
             selectedTaille: "",

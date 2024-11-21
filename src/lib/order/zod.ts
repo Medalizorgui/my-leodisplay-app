@@ -7,7 +7,7 @@ export const orderSchema = z.object({
     qty: z.number().int().positive(),
     email: z.string().email(),
     name: z.string().min(1),
-    productId: z.number().int().positive(),
+    productNom: z.string().min(1),
     selectedType: z.string().min(1),
     selectedBase: z.string().min(1),
     selectedTaille: z.string().min(1),

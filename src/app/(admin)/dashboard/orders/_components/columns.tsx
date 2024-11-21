@@ -76,10 +76,10 @@ export const columns: ColumnDef<Order>[] = [
         ),
     },
     {
-      accessorKey: "productId",
-      header: "Product ID",
+      accessorKey: "productNom",
+      header: "Product Nom",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("productId")}</div>
+        <div className="capitalize">{row.getValue("productNom")}</div>
       ),
     },
     {

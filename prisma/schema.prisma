@@ -19,7 +19,7 @@ model Customer {
 
 model Product {
   id          Int      @id @default(autoincrement())
-  nom         String
+  nom         String   @unique
   description String
   image       String   // Stocke l'URL ou le chemin de l'image
   prix        String
@@ -37,7 +37,7 @@ model Order {
   qty            Int      // Quantity ordered
   email          String   // FK from Customer
   name           String   // FK from Customer's name
-  productId      Int      // FK from Product
+  productNom     String      // FK from Product
 
   // Fields to store specific selections from Product array fields
   selectedType   String   // Selected value from Product.type
@@ -45,10 +45,10 @@ model Order {
   selectedTaille String   // Selected value from Product.taille
   selectedBarre  String   // Selected value from Product.barre
 
-  product        Product  @relation(fields: [productId], references: [id])
+  product        Product  @relation(fields: [productNom], references: [nom])
   customer       Customer @relation(fields: [email], references: [email])
 
-  @@index([productId])
+  @@index([productNom])
   @@index([email])
   @@index([orderGroupId])
 }
