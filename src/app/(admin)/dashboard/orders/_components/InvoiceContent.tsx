@@ -20,17 +20,17 @@ export default function InvoiceContent({ order, closeDialog }: { order: any; clo
             doc.text(`Order ID: ${order.id}`, 20, 40);
             doc.text(`Customer Name: ${order.name}`, 20, 50);
             doc.text(`Email: ${order.email}`, 20, 60);
-            doc.text(`Product Name: ${order.product}`,20,60)
-            doc.text(`Status: ${order.status}`, 20, 70);
-            doc.text(`Quantity: ${order.qty}`, 20, 80);
+            doc.text(`Product Name: ${order.productNom}`,20,70);
+            doc.text(`Status: ${order.status}`, 20, 80);
+            doc.text(`Quantity: ${order.qty}`, 20, 90);
 
             if (order.image) {
-                // Add product image (if available)
-                const imgData = order.image; // Ensure this is a base64-encoded image
-                doc.addImage(imgData, "JPEG", 20, 90, 50, 50);
+                const imgURL = order.image; // This is the URL you want to add to the PDF
+                doc.addImage(imgURL, "JPEG", 20, 100, 50, 50); // Adjust position if necessary
             }
+    
+            
 
-            doc.text("Order Summary:", 20, 150);
             doc.text(`Selected Type: ${order.selectedType}`, 20, 160);
             doc.text(`Selected Base: ${order.selectedBase}`, 20, 170);
             doc.text(`Selected Taille: ${order.selectedTaille}`, 20, 180);
@@ -38,6 +38,7 @@ export default function InvoiceContent({ order, closeDialog }: { order: any; clo
 
             // Save the PDF
             doc.save(`invoice_${order.id}.pdf`);
+            console.log("order", order)
         } catch (error) {
             console.error("Error generating PDF:", error);
         } finally {
@@ -58,7 +59,10 @@ export default function InvoiceContent({ order, closeDialog }: { order: any; clo
                     <strong>Email:</strong> {order.email}
                 </p>
                 <p>
-                    <strong>Product Name:</strong> {order.product}
+                    <strong>Product Name:</strong> {order.productNom}
+                </p>
+                <p>
+                    <strong>Image:</strong> {order.image}
                 </p>
                 <p>
                     <strong>Status:</strong> {order.status}

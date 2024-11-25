@@ -144,6 +144,9 @@ export const columns: ColumnDef<Order>[] = [
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
+                <InvoiceDialog order={payment}/>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
                 <DeleteOrder orderId={orderId}/>
               </DropdownMenuItem>
               <DropdownMenuItem>
