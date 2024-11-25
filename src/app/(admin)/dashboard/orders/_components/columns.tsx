@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpDown, DeleteIcon, MoreHorizontal } from "lucide-react";
 import UpdateOrder from "./update";
 import DeleteOrder from "./delete";
+import InvoiceDialog from "./InvoiceDialog";
 
 export const columns: ColumnDef<Order>[] = [
     {

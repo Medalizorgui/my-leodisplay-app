@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
         orderGroupId: parsedData.orderGroupId || 1, // Default to 1 if not provided
         email: parsedData.email,
         name: parsedData.name,
-        productId: parsedData.productId,
+        productNom: parsedData.productNom,
         selectedType: parsedData.selectedType || "",
         selectedBase: parsedData.selectedBase || "",
         selectedTaille: parsedData.selectedTaille || "",
@@ -98,7 +98,7 @@ export async function PUT(request: NextRequest) {
         orderGroupId: parsedData.orderGroupId,
         email: parsedData.email,
         name: parsedData.name,
-        productId: parsedData.productId,
+        productNom: parsedData.productNom,
         selectedType: parsedData.selectedType,
         selectedBase: parsedData.selectedBase,
         selectedTaille: parsedData.selectedTaille,

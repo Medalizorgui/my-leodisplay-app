@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     try {
         const data = await request.json();
         const parsedData = productSchema.parse(data); // Validate input with Zod schema
-
+ 
         // Create a new product using Prisma
         const product = await prisma.product.create({
             data: {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -14,13 +14,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import UploadComponent from "@/components/image-upload"; // Assuming you have a separate upload component
-import { orderSchema, type OrderSchema } from "@/lib/order/zod";
-
 import ImageUploader from "./ImageUploader";
+import { orderSchema, type OrderSchema } from "@/lib/order/zod";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-// OrderFormProps interface defines the structure for the props passed into the component
 interface OrderFormProps {
   defaultValues: OrderSchema;
   onSubmit: (data: OrderSchema) => Promise<void>;
@@ -34,50 +37,61 @@ export default function OrderForm({
   submitButtonText,
   isSubmitting,
 }: OrderFormProps) {
-  // useForm hook to handle form state and validation using Zod schema
   const form = useForm<OrderSchema>({
-    resolver: zodResolver(orderSchema), // Zod validation schema
+    resolver: zodResolver(orderSchema),
     defaultValues,
   });
 
-  // State for storing the uploaded image URL
-  const [imageUrl, setImageUrl] = React.useState<string | null>(null);
+  const [productNames, setProductNames] = useState<string[]>([]);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
 
-  // Log imageUrl whenever it changes
+  useEffect(() => {
+    // Fetch product names from the API
+    async function fetchProductNames() {
+      try {
+        const response = await fetch("/api/products", {
+          method: "GET",
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch product names");
+        }
+
+        const products = await response.json();
+        const names = products.map((product: { nom: string }) => product.nom); // Adjust based on your API's data structure
+        setProductNames(names);
+      } catch (error) {
+        console.error("Error fetching product names:", error);
+      }
+    }
+
+    fetchProductNames();
+  }, []);
+
   useEffect(() => {
     if (imageUrl) {
-      form.setValue("image", imageUrl); // Update form's "image" field with imageUrl
+      form.setValue("image", imageUrl);
     }
   }, [imageUrl, form]);
 
-  // Callback to handle image URL change from ImageUploader
   const handleImageUrlChange = (url: string) => {
-    console.log("ImageUploader provided URL:", url); // Log to ensure the URL is being passed
     setImageUrl(url);
   };
 
-  // Submit handler that processes form data before submission
   const OnSubmit = async (data: OrderSchema) => {
     if (!imageUrl) {
       console.error("No image uploaded");
     }
-    console.log("Submitting order data:");
-    console.log(form.getValues());
-
     await onSubmit({
       ...data,
-      image: imageUrl || "", // Ensure the image field is set, even if empty
+      image: imageUrl || "",
     });
   };
 
-  // Log the updated imageUrl whenever it changes
-
   return (
     <div className="h-96 overflow-y-auto">
-      {/* Form component that takes care of field validation and state */}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(OnSubmit)} className="space-y-4">
-          {/* Name input field */}
           <FormField
             control={form.control}
             name="name"
@@ -91,6 +105,7 @@ export default function OrderForm({
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="email"
@@ -105,7 +120,6 @@ export default function OrderForm({
             )}
           />
 
-          {/* Product ID input field */}
           <FormField
             control={form.control}
             name="productNom"
@@ -113,36 +127,27 @@ export default function OrderForm({
               <FormItem>
                 <FormLabel>Product Nom</FormLabel>
                 <FormControl>
-                  <Input
-                  {...field} placeholder="Product Nom"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Order Group ID input field */}
-          <FormField
-            control={form.control}
-            name="orderGroupId"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Order Group ID</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
+                  <Select
                     {...field}
-                    placeholder="Order Group ID..."
-                    onChange={(e) => field.onChange(Number(e.target.value))}
-                  />
+                    onValueChange={(value) => field.onChange(value)} // Update form value on select change
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a product" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {productNames.map((product, index) => (
+                        <SelectItem key={index} value={product}>
+                          {product}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          {/* Quantity input field */}
           <FormField
             control={form.control}
             name="qty"
@@ -162,7 +167,6 @@ export default function OrderForm({
             )}
           />
 
-          {/* Status select field */}
           <FormField
             control={form.control}
             name="status"
@@ -176,7 +180,7 @@ export default function OrderForm({
                     onChange={(e) =>
                       field.onChange(e.target.value as "attente" | "livree")
                     }
-                    value={field.value ?? "attente"} // Set a default if `field.value` is undefined
+                    value={field.value ?? "attente"}
                   >
                     <option value="attente">attente</option>
                     <option value="livree">livree</option>
@@ -186,13 +190,6 @@ export default function OrderForm({
               </FormItem>
             )}
           />
-
-          {/* Image upload field */}
-          <FormItem>
-            <FormLabel>Image</FormLabel>
-            <ImageUploader onImageUrlChange={handleImageUrlChange} />
-          </FormItem>
-
           {/* Type input field */}
           <FormField
             control={form.control}
@@ -253,7 +250,11 @@ export default function OrderForm({
             )}
           />
 
-          {/* Submit button */}
+          <FormItem>
+            <FormLabel>Image</FormLabel>
+            <ImageUploader onImageUrlChange={handleImageUrlChange} />
+          </FormItem>
+
           <Button
             disabled={!imageUrl || isSubmitting}
             className="w-full"
