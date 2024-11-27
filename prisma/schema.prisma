@@ -1,5 +1,5 @@
 datasource db {
-  provider = "postgresql" // ou "mysql" si vous utilisez MySQL
+  provider = "postgresql" // or "mysql" if you are using MySQL
   url      = env("DATABASE_URL")
 }
 
@@ -8,42 +8,66 @@ generator client {
 }
 
 model Customer {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
   nom      String
-  role     Role    // Enum pour admin/client
+  role     Role     // Enum for admin/client
   phone    String?
-  password String  @default("")  // New password field
-  orders    Order[]
+  password String   @default("")  // New password field
+  orders   Order[]
 }
 
 model Product {
   id          Int      @id @default(autoincrement())
   nom         String   @unique
   description String
-  image       String   // Stocke l'URL ou le chemin de l'image
+  image       String   // URL or path to the product image
   prix        String
-  type        String[] // Tableau de types
-  base        String[] // Tableau de bases
-  taille      String[] // Tableau de tailles
-  barre       String[] // Tableau de barres
+  type        String[] // Array of types
+  barre       String[] // Array of bars
+  bases       Base[]   // Relation to the Base model
+  tailles     Taille[] // Relation to the Taille model
   orders      Order[]
 }
+
+model Base {
+  id           Int      @id @default(autoincrement())
+  name         String
+  image        String   // URL to the image
+  price        Float    // Price for this base
+  quantity     Int      // Quantity available
+  productId    Int
+  product      Product  @relation(fields: [productId], references: [id])
+}
+
+model Taille {
+  id           Int      @id @default(autoincrement())
+  name         String
+  image        String   // URL to the image
+  downloadLink String?  // Optional download link
+  price        Float    // Price for this taille
+  quantity     Int      // Quantity available
+  productId    Int
+  product      Product  @relation(fields: [productId], references: [id])
+}
+
 model Order {
   id             Int      @id @default(autoincrement())
   orderGroupId   Int      // Group ID to identify products in the same order
   status         String   // 'delivered' or 'pending'
   image          String   // Product image URL or path
-  qty            Int      // Quantity ordered
+  qty            Int      // Total quantity ordered for the product
   email          String   // FK from Customer
   name           String   // FK from Customer's name
-  productNom     String      // FK from Product
+  productNom     String   // FK from Product.nom
 
-  // Fields to store specific selections from Product array fields
-  selectedType   String   // Selected value from Product.type
-  selectedBase   String   // Selected value from Product.base
-  selectedTaille String   // Selected value from Product.taille
-  selectedBarre  String   // Selected value from Product.barre
+  // Fields to store specific selections
+  selectedType   String?  // Selected value from Product.type
+  selectedBase   String?  // Name of the selected base
+  baseQuantity   Int?     // Quantity of the selected base
+  selectedTaille String?  // Name of the selected taille
+  tailleQuantity Int?     // Quantity of the selected taille
+  selectedBarre  String?  // Selected value from Product.barre
 
   product        Product  @relation(fields: [productNom], references: [nom])
   customer       Customer @relation(fields: [email], references: [email])
@@ -52,6 +76,7 @@ model Order {
   @@index([email])
   @@index([orderGroupId])
 }
+
 
 enum Role {
   admin

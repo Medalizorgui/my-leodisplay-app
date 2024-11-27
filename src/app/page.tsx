@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ArrowDownToLine, CheckCircle, Leaf } from "lucide-react";  // Assuming you are using lucide-react for icons
 import Link from "next/link";  // Import Link from Next.js
 
+
 const prisma = new PrismaClient();
 
 // Fetch products directly inside the component (this will run server-side)
