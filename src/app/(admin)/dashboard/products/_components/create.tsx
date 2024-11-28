@@ -1,4 +1,5 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -26,8 +27,8 @@ export default function CreateProduct() {
       image: "",
       prix: "",
       type: [],
-      base: [],
-      taille: [],
+      bases: [], // Updated to match the new field name
+      tailles: [], // Updated to match the new field name
       barre: [],
     },
   });
@@ -93,8 +94,8 @@ export default function CreateProduct() {
             image: "",
             prix: "",
             type: [],
-            base: [],
-            taille: [],
+            bases: [], // Updated to match the new field name
+            tailles: [], // Updated to match the new field name
             barre: [],
           }}
           onSubmit={onSubmit}

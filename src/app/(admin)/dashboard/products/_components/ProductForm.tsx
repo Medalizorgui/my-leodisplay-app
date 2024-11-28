@@ -3,7 +3,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -40,32 +39,46 @@ export default function ProductForm({
 
   // State for dynamic fields
   const [types, setTypes] = React.useState<string[]>(defaultValues.type || []);
-  const [bases, setBases] = React.useState<string[]>(defaultValues.base || []);
-  const [tailles, setTailles] = React.useState<string[]>(defaultValues.taille || []);
   const [barres, setBarres] = React.useState<string[]>(defaultValues.barre || []);
+  const [bases, setBases] = React.useState<{ image: string; name: string; price: number }[]>(
+    defaultValues.bases || []
+  );
+  const [tailles, setTailles] = React.useState<{ image:string; name: string; price: number }[]>(
+    defaultValues.tailles || []
+  );
 
-  // General handler functions for adding, removing, and changing dynamic fields
-  const handleAddField = (setter: React.Dispatch<React.SetStateAction<string[]>>) => {
-    setter((prev) => [...prev, ""]);
+  // Add a new base
+  const handleAddBase = () => {
+    setBases((prev) => [...prev, { image: "", name: "", price: 0 }]);
   };
 
-  const handleRemoveField = (
-    setter: React.Dispatch<React.SetStateAction<string[]>>,
-    index: number
-  ) => {
-    setter((prev) => prev.filter((_, i) => i !== index));
+  // Remove a base
+  const handleRemoveBase = (index: number) => {
+    setBases((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleFieldChange = (
-    setter: React.Dispatch<React.SetStateAction<string[]>>,
-    index: number,
-    value: string
-  ) => {
-    setter((prev) => {
-      const updated = [...prev];
-      updated[index] = value;
-      return updated;
-    });
+  // Update a base
+  const handleBaseChange = (index: number, key: "image" | "name" | "price", value: string | number) => {
+    setBases((prev) =>
+      prev.map((base, i) => (i === index ? { ...base, [key]: value } : base))
+    );
+  };
+
+  // Add a new taille
+  const handleAddTaille = () => {
+    setTailles((prev) => [...prev, { image: "",name: "", price: 0 }]);
+  };
+
+  // Remove a taille
+  const handleRemoveTaille = (index: number) => {
+    setTailles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // Update a taille
+  const handleTailleChange = (index: number, key: "image" | "name" | "price", value: string | number) => {
+    setTailles((prev) =>
+      prev.map((taille, i) => (i === index ? { ...taille, [key]: value } : taille))
+    );
   };
 
   // Submit handler that includes dynamic fields
@@ -73,8 +86,8 @@ export default function ProductForm({
     await onSubmit({
       ...data,
       type: types,
-      base: bases,
-      taille: tailles,
+      bases: bases,
+      tailles: tailles,
       barre: barres,
     });
   };
@@ -141,103 +154,96 @@ export default function ProductForm({
             )}
           />
 
-          {/* Dynamic Fields */}
+          {/* Dynamic Fields for Types */}
           <div>
-            <FormLabel>Type</FormLabel>
+            <FormLabel>Types</FormLabel>
             {types.map((type, index) => (
               <div key={index} className="flex items-center space-x-2 mb-2">
                 <FormControl className="flex-grow">
                   <Input
                     value={type}
-                    onChange={(e) => handleFieldChange(setTypes, index, e.target.value)}
+                    onChange={(e) =>
+                      setTypes((prev) => prev.map((t, i) => (i === index ? e.target.value : t)))
+                    }
                     placeholder="Enter type"
                   />
                 </FormControl>
                 <Button
                   type="button"
-                  onClick={() => handleRemoveField(setTypes, index)}
+                  onClick={() => setTypes((prev) => prev.filter((_, i) => i !== index))}
                 >
                   Remove
                 </Button>
               </div>
             ))}
-            <Button type="button" onClick={() => handleAddField(setTypes)} className="mt-2">
+            <Button type="button" onClick={() => setTypes((prev) => [...prev, ""])} className="mt-2">
               Add Type
             </Button>
           </div>
 
-          {/* Base Field */}
+          {/* Dynamic Fields for Bases */}
           <div>
-            <FormLabel>Base</FormLabel>
+            <FormLabel>Bases</FormLabel>
             {bases.map((base, index) => (
-              <div key={index} className="flex items-center space-x-2 mb-2">
-                <FormControl className="flex-grow">
+              <div key={index} className="space-y-2 mb-4">
+                <div className="flex space-x-2">
                   <Input
-                    value={base}
-                    onChange={(e) => handleFieldChange(setBases, index, e.target.value)}
-                    placeholder="Enter base"
+                    value={base.image}
+                    onChange={(e) => handleBaseChange(index, "image", e.target.value)}
+                    placeholder="Base Image URL"
                   />
-                </FormControl>
-                <Button
-                  type="button"
-                  onClick={() => handleRemoveField(setBases, index)}
-                >
-                  Remove
-                </Button>
+                  <Input
+                    value={base.name}
+                    onChange={(e) => handleBaseChange(index, "name", e.target.value)}
+                    placeholder="Base Name"
+                  />
+                  <Input
+                    type="number"
+                    value={base.price}
+                    onChange={(e) => handleBaseChange(index, "price", parseFloat(e.target.value))}
+                    placeholder="Base Price"
+                  />
+                  <Button type="button" onClick={() => handleRemoveBase(index)}>
+                    Remove
+                  </Button>
+                </div>
               </div>
             ))}
-            <Button type="button" onClick={() => handleAddField(setBases)} className="mt-2">
+            <Button type="button" onClick={handleAddBase} className="mt-2">
               Add Base
             </Button>
           </div>
 
-          {/* Taille Field */}
+          {/* Dynamic Fields for Tailles */}
           <div>
-            <FormLabel>Taille</FormLabel>
+            <FormLabel>Tailles</FormLabel>
             {tailles.map((taille, index) => (
-              <div key={index} className="flex items-center space-x-2 mb-2">
-                <FormControl className="flex-grow">
-                  <Input
-                    value={taille}
-                    onChange={(e) => handleFieldChange(setTailles, index, e.target.value)}
-                    placeholder="Enter taille"
+              <div key={index} className="space-y-2 mb-4">
+                <div className="flex space-x-2">
+                <Input
+                    value={taille.image}
+                    onChange={(e) => handleBaseChange(index, "image", e.target.value)}
+                    placeholder="taille Image URL"
                   />
-                </FormControl>
-                <Button
-                  type="button"
-                  onClick={() => handleRemoveField(setTailles, index)}
-                >
-                  Remove
-                </Button>
+                  <Input
+                    value={taille.name}
+                    onChange={(e) => handleTailleChange(index, "name", e.target.value)}
+                    placeholder="Taille Name"
+                  />
+                  <Input
+                    type="number"
+                    value={taille.price}
+                    onChange={(e) => handleTailleChange(index, "price", parseFloat(e.target.value))}
+                    placeholder="Taille Price"
+                  />
+                  <Button type="button" onClick={() => handleRemoveTaille(index)}>
+                    Remove
+                  </Button>
+                </div>
               </div>
             ))}
-            <Button type="button" onClick={() => handleAddField(setTailles)} className="mt-2">
+            <Button type="button" onClick={handleAddTaille} className="mt-2">
               Add Taille
-            </Button>
-          </div>
-
-          {/* Barre Field */}
-          <div>
-            <FormLabel>Barre</FormLabel>
-            {barres.map((barre, index) => (
-              <div key={index} className="flex items-center space-x-2 mb-2">
-                <FormControl className="flex-grow">
-                  <Input
-                    value={barre}
-                    onChange={(e) => handleFieldChange(setBarres, index, e.target.value)}
-                    placeholder="Enter barre"
-                  />
-                </FormControl>
-                <Button
-                  type="button"
-                  onClick={() => handleRemoveField(setBarres, index)}
-                >
-                  Remove
-                </Button>
-              </div>
-            ))}
-            <Button type="button" onClick={() => handleAddField(setBarres)} className="mt-2">
-              Add Barre
             </Button>
           </div>
 

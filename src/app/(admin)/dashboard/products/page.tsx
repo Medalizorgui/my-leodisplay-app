@@ -6,7 +6,14 @@ const db = new PrismaClient();
 
 export default async function page() {
 
-  const allProducts = await db.product.findMany() ;
+  const allProducts = await db.product.findMany(
+    {
+      include: {
+          bases: true,
+          tailles: true
+      }
+  }
+  ) ;
   const formattedProducts = allProducts.map(product => ({
     ...product,
   })) 

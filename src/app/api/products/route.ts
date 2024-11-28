@@ -1,12 +1,19 @@
-import prisma from '@/lib/prisma'; // Ensure this path is correct
-import { productSchema } from '@/lib/product/zod'; // Adjust as necessary
+import prisma from '@/lib/prisma';
+import { productSchema } from '@/lib/product/zod';
 import { NextRequest, NextResponse } from 'next/server';
 
 // GET method to retrieve all products
 export async function GET() {
     try {
-        const products = await prisma.product.findMany();
+        const products = await prisma.product.findMany({
+            include: {
+                bases: true,
+                tailles: true
+            }
+        });
+        console.log("product    :", products);
         return NextResponse.json(products);
+
     } catch (error) {
         console.error('Error fetching products:', error);
         return NextResponse.json({ message: 'An unexpected error occurred' }, { status: 500 });
@@ -17,31 +24,45 @@ export async function GET() {
 export async function POST(request: NextRequest) {
     try {
         const data = await request.json();
-        const parsedData = productSchema.parse(data); // Validate input with Zod schema
- 
+        const parsedData = productSchema.parse(data);
+
         // Create a new product using Prisma
         const product = await prisma.product.create({
             data: {
                 nom: parsedData.nom,
-                description: parsedData.description || '',
-                image: parsedData.image || '',
-                prix: parsedData.prix || '',
+                description: parsedData.description,
+                image: parsedData.image,
+                prix: parsedData.prix,
                 type: parsedData.type || [],
-                base: parsedData.base || [],
-                taille: parsedData.taille || [],
                 barre: parsedData.barre || [],
+                bases: {
+                    create: parsedData.bases?.map(base => ({
+                        name: base.name,
+                        image: base.image,
+                        price: base.price
+                    })) || []
+                },
+                tailles: {
+                    create: parsedData.tailles?.map(taille => ({
+                        name: taille.name,
+                        image: taille.image,
+                        downloadLink: taille.downloadLink,
+                        price: taille.price
+                    })) || []
+                }
             },
+            include: {
+                bases: true,
+                tailles: true
+            }
         });
 
-        // Respond with the created product
         return NextResponse.json(product, { status: 201 });
     } catch (error) {
         console.error('Error creating product:', error);
-
-        // Ensure error message is properly formatted as an object
-        const errorMessage = error instanceof Error ? error.message : 'Failed to create product';
-
-        return NextResponse.json({ message: errorMessage }, { status: 400 });
+        return NextResponse.json({ 
+            message: error instanceof Error ? error.message : 'Failed to create product' 
+        }, { status: 400 });
     }
 }
 
@@ -55,6 +76,10 @@ export async function DELETE(request: NextRequest) {
             return NextResponse.json({ message: 'Product ID is required' }, { status: 400 });
         }
 
+        // Delete associated bases and tailles first
+        await prisma.base.deleteMany({ where: { productId: id } });
+        await prisma.taille.deleteMany({ where: { productId: id } });
+
         const deletedProduct = await prisma.product.delete({
             where: { id },
         });
@@ -66,16 +91,21 @@ export async function DELETE(request: NextRequest) {
     }
 }
 
+// PUT method to update a product
 export async function PUT(request: NextRequest) {
     try {
         const body = await request.json();
-        const { id: idString, ...rest } = body; // Extract ID as a string
-        const id = idString ? parseInt(idString, 10) : null; // Convert to number
-        const parsedData = productSchema.parse(rest); // Validate the rest of the data
+        const { id: idString, ...rest } = body;
+        const id = idString ? parseInt(idString, 10) : null;
+        const parsedData = productSchema.parse(rest);
 
         if (!id) {
             return NextResponse.json({ message: 'Product ID is required' }, { status: 400 });
         }
+
+        // Delete existing bases and tailles
+        await prisma.base.deleteMany({ where: { productId: id } });
+        await prisma.taille.deleteMany({ where: { productId: id } });
 
         const updatedProduct = await prisma.product.update({
             where: { id },
@@ -84,11 +114,28 @@ export async function PUT(request: NextRequest) {
                 description: parsedData.description,
                 image: parsedData.image,
                 prix: parsedData.prix,
-                type: parsedData.type,
-                base: parsedData.base,
-                taille: parsedData.taille,
-                barre: parsedData.barre,
+                type: parsedData.type || [],
+                barre: parsedData.barre || [],
+                bases: {
+                    create: parsedData.bases?.map(base => ({
+                        name: base.name,
+                        image: base.image,
+                        price: base.price
+                    })) || []
+                },
+                tailles: {
+                    create: parsedData.tailles?.map(taille => ({
+                        name: taille.name,
+                        image: taille.image,
+                        downloadLink: taille.downloadLink,
+                        price: taille.price
+                    })) || []
+                }
             },
+            include: {
+                bases: true,
+                tailles: true
+            }
         });
 
         return NextResponse.json(updatedProduct, { status: 200 });

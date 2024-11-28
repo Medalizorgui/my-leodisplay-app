@@ -15,7 +15,12 @@ import { type ProductSchema } from "@/lib/product/zod"; // Adjust to your schema
 import { Product } from "@prisma/client"; // Adjust if your product model is defined differently
 import { Pencil1Icon } from "@radix-ui/react-icons";
 
-export default function UpdateProduct({ product }: { product: Product }) {
+type ExtendedProduct = Product & {
+    bases: { name: string; image: string; price: number }[]; // Example of what base might look like
+    tailles: { name: string; image: string; downloadLink: string; price: number }[]; // Example of what taille might look like
+  };
+
+export default function UpdateProduct({ product }: { product: ExtendedProduct }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [isDialogOpen, setDialogOpen] = useState(false);
@@ -89,9 +94,9 @@ export default function UpdateProduct({ product }: { product: Product }) {
                         image: product.image || "",
                         prix: product.prix.toString(),
                         type: product.type || [],
-                        base: product.base || [],
-                        taille: product.taille || [],
                         barre: product.barre || [],
+                        bases: product.bases || [],
+                        tailles: product.tailles || [],
                     }}
                     onSubmit={onSubmit}
                     submitButtonText="Update"

@@ -61,27 +61,28 @@ async function main() {
   const windFlag = await prisma.product.findUnique({ where: { nom: 'WIND FLAG' } });
   const standParapluie = await prisma.product.findUnique({ where: { nom: 'STAND PARAPLUIE' } });
 
-  // Create bases and tailles
-  await prisma.base.createMany({
+  // Create bases
+  const bases = await prisma.base.createMany({
     data: [
-      { name: 'Water', price: 20.0, quantity: 10, productId: windFlag.id,image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
-      { name: 'Beton', price: 25.0, quantity: 15, productId: windFlag.id,image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
-      { name: 'Platine Metalique', price: 25.0, quantity: 15, productId: windFlag.id,image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
+      { name: 'Water', price: 20.0, productId: windFlag.id, image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
+      { name: 'Beton', price: 25.0, productId: windFlag.id, image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
+      { name: 'Platine Metalique', price: 25.0, productId: windFlag.id, image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
     ],
   });
 
-  await prisma.taille.createMany({
+  // Create tailles
+  const tailles = await prisma.taille.createMany({
     data: [
-      { name: '2m50', price: 10.0, quantity: 5, productId: windFlag.id,image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
-      { name: '2m80', price: 10.0, quantity: 5, productId: windFlag.id,image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
-      { name: '3m20', price: 10.0, quantity: 5, productId: windFlag.id,image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
-      { name: '3m80', price: 10.0, quantity: 5, productId: windFlag.id,image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
-      { name: '4m50', price: 10.0, quantity: 5, productId: windFlag.id,image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
-      { name: '5m00', price: 10.0, quantity: 5, productId: windFlag.id,image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
-      { name: '1x3', price: 50.0, quantity: 5, productId: standParapluie.id, image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
-      { name: '2x3', price: 50.0, quantity: 5, productId: standParapluie.id, image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
-      { name: '3x3', price: 50.0, quantity: 5, productId: standParapluie.id, image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
-      { name: '4x3', price: 50.0, quantity: 5, productId: standParapluie.id, image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
+      { name: '2m50', price: 10.0, productId: windFlag.id, image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
+      { name: '2m80', price: 10.0, productId: windFlag.id, image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
+      { name: '3m20', price: 10.0, productId: windFlag.id, image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
+      { name: '3m80', price: 10.0, productId: windFlag.id, image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
+      { name: '4m50', price: 10.0, productId: windFlag.id, image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
+      { name: '5m00', price: 10.0, productId: windFlag.id, image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
+      { name: '1x3', price: 50.0, productId: standParapluie.id, image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
+      { name: '2x3', price: 50.0, productId: standParapluie.id, image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
+      { name: '3x3', price: 50.0, productId: standParapluie.id, image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
+      { name: '4x3', price: 50.0, productId: standParapluie.id, image: 'https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp' },
     ],
   });
 
@@ -97,9 +98,9 @@ async function main() {
         name: 'Client User',
         productNom: 'WIND FLAG',
         selectedType: 'Courbé',
-        selectedBase: 'Water',
+        selectedBaseName: 'Water',
         baseQuantity: 1,
-        selectedTaille: '2m50',
+        selectedTailleName: '2m50',
         tailleQuantity: 2,
         selectedBarre: 'Metalique',
       },
