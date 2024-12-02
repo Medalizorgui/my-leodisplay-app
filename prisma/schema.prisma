@@ -37,18 +37,18 @@ model Base {
   price        Float    // Price for this base
   productId    Int
   product      Product  @relation(fields: [productId], references: [id])
-  orders       Order[]  // Relation to Orders
+  
 }
 
 model Taille {
   id           Int      @id @default(autoincrement())
   name         String   @unique// Name of the taille
   image        String   // URL to the image
-  downloadLink String?  // Optional download link
+  downloyadLink String?  // Optional download link
   price        Float    // Price for this taille
   productId    Int
   product      Product  @relation(fields: [productId], references: [id])
-  orders       Order[]  // Relation to Orders
+  
 }
 
 model Order {
@@ -62,19 +62,18 @@ model Order {
   productNom     String   // FK from Product.nom
 
   // Fields to store specific selections
-  selectedBaseName   String?     // FK to Base
-  selectedTailleName String?     // FK to Taille
+  selectedBaseName   String?     
+  selectedTailleName String?     
   baseQuantity     Int?     // Quantity of the selected base
   tailleQuantity   Int?     // Quantity of the selected taille
 
   selectedType   String?
   selectedBarre  String?  // Selected value from Product.barre
 
+
   product        Product  @relation(fields: [productNom], references: [nom])
   customer       Customer @relation(fields: [email], references: [email])
-  selectedBase   Base?    @relation(fields: [selectedBaseName], references: [name])
-  selectedTaille Taille?  @relation(fields: [selectedTailleName], references: [name])
-
+  
   @@index([productNom])
   @@index([email])
   @@index([orderGroupId])

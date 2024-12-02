@@ -6,7 +6,7 @@ import {
   ColumnFiltersState,
   SortingState,
   VisibilityState,
-  flexRender,
+  flexRender, 
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,

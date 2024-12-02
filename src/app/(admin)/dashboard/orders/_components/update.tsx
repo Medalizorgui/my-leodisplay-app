@@ -92,8 +92,10 @@ export default function UpdateOrder({ order }: { order: Order & { id: number } }
                         name: order.name,
                         productNom: order.productNom,
                         selectedType: order.selectedType || "",
-                        selectedBase: order.selectedBase || "",
-                        selectedTaille: order.selectedTaille || "",
+                        selectedBase: order.selectedBaseName || "",
+                        baseQuantity : order.baseQuantity || 0,
+                        selectedTaille: order.selectedTailleName || "",
+                        tailleQuantity: order.tailleQuantity || 0,
                         selectedBarre: order.selectedBarre || "",
                         image: order.image || "",
                     }}

@@ -219,6 +219,24 @@ export default function OrderForm({
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="baseQuantity"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>base Quantity</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    {...field}
+                    placeholder="Quantity..."
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           {/* Taille input field */}
           <FormField
@@ -229,6 +247,24 @@ export default function OrderForm({
                 <FormLabel>Taille</FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="Select Taille" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="tailleQuantity"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>taille Quantity</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    {...field}
+                    placeholder="Quantity..."
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

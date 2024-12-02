@@ -33,8 +33,10 @@ export default function InvoiceContent({ order, closeDialog }: { order: any; clo
 
             doc.text(`Selected Type: ${order.selectedType}`, 20, 160);
             doc.text(`Selected Base: ${order.selectedBase}`, 20, 170);
-            doc.text(`Selected Taille: ${order.selectedTaille}`, 20, 180);
-            doc.text(`Selected Barre: ${order.selectedBarre}`, 20, 190);
+            doc.text(`Quantite de Base: ${order.baseQuantity}`, 20, 180);
+            doc.text(`Selected Taille: ${order.selectedTaille}`, 20, 190);
+            doc.text(`quantite de taille: ${order.tailleQuantity}`, 20, 200);
+            doc.text(`Selected Barre: ${order.selectedBarre}`, 20, 210);
 
             // Save the PDF
             doc.save(`invoice_${order.id}.pdf`);
@@ -73,11 +75,18 @@ export default function InvoiceContent({ order, closeDialog }: { order: any; clo
                 <p>
                     <strong>Selected Type:</strong> {order.selectedType}
                 </p>
+                
                 <p>
                     <strong>Selected Base:</strong> {order.selectedBase}
                 </p>
                 <p>
+                    <strong>Quantite Base:</strong> {order.baseQuantity}
+                </p>
+                <p>
                     <strong>Selected Taille:</strong> {order.selectedTaille}
+                </p>
+                <p>
+                    <strong>Quantite Taille:</strong> {order.selectedType}
                 </p>
                 <p>
                     <strong>Selected Barre:</strong> {order.selectedBarre}

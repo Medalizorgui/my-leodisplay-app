@@ -31,7 +31,9 @@ export default function CreateOrder() {
       productNom: "", // Add default value
       selectedType: "",
       selectedBase: "",
+      baseQuantity : 0,
       selectedTaille: "",
+      tailleQuantity: 0,
       selectedBarre: "",
     },
   });
@@ -101,7 +103,9 @@ export default function CreateOrder() {
             productNom: "", // Add default value
             selectedType: "",
             selectedBase: "",
-            selectedTaille: "",
+            baseQuantity: 0,
+            selectedTaille:"",
+            tailleQuantity: 0,
             selectedBarre: "",
           }} // Pass defaultValues to OrderForm
           onSubmit={onSubmit}

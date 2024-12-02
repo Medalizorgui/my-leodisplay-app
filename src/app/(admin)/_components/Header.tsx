@@ -36,7 +36,7 @@ export default function Header() {
           Dashboard
         </Link>
         <Link
-          href="/dashboard"
+          href="/dashboard/orders"
           className="text-muted-foreground transition-colors hover:text-foreground"
         >
           Orders

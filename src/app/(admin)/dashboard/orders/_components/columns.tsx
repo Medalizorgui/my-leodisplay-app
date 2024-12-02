@@ -91,17 +91,31 @@ export const columns: ColumnDef<Order>[] = [
       ),
     },
     {
-      accessorKey: "selectedTaille",
-      header: "Selected Taille",
+      accessorKey: "selectedBaseName",
+      header: "Selected base",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("selectedTaille")}</div>
+        <div className="capitalize">{row.getValue("selectedBaseName")}</div>
       ),
     },
     {
-      accessorKey: "selectedBase",
-      header: "Selected Base",
+      accessorKey: "baseQuantity",
+      header: "base quantite",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("selectedBase")}</div>
+        <div className="capitalize">{row.getValue("baseQuantity")}</div>
+      ),
+    },
+    {
+      accessorKey: "selectedTailleName",
+      header: "Selected Taille",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("selectedTailleName")}</div>
+      ),
+    },
+    {
+      accessorKey: "tailleQuantity",
+      header: "taille quantite",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("tailleQuantity")}</div>
       ),
     },
     {
