@@ -50,7 +50,7 @@ export default async function Home() {
         {/* Products Section */}
         <section className="flex flex-col items-center mb-12">
           <h2 className="text-3xl font-bold mb-8 text-center" style={{ color: "hsl(47.9, 95.8%, 53.1%)" }}>Our Products</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 flex flex-col items-center">
+          <div className=" grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6  flex-col items-center justify-center">
             {products.map((product) => (
               <Card key={product.id} className="flex flex-col border border-gray-200 rounded-lg shadow-sm">
                 <CardHeader>
