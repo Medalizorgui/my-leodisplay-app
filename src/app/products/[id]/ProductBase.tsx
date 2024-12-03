@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import {
@@ -8,10 +9,41 @@ import {
 } from "@/components/ui/accordion";
 
 type ProductBaseProps = {
-  baseData: any[]; // Expected base data from the ClientComponent
+  baseData: Array<{
+    id: string;
+    name: string;
+    image: string;
+    price: number;
+  }>;
+  onQuantityChange: (id: string, quantity: number) => void;
 };
 
-export function ProductBase({ baseData }: ProductBaseProps) {
+export function ProductBase({ baseData, onQuantityChange }: ProductBaseProps) {
+  const [quantities, setQuantities] = useState<Record<string, number>>(
+    baseData.reduce((acc, base) => {
+      acc[base.id] = 0;
+      return acc;
+    }, {} as Record<string, number>)
+  );
+
+  const handleIncrease = (id: string) => {
+    const newQuantity = quantities[id] + 1;
+    setQuantities((prev) => ({
+      ...prev,
+      [id]: newQuantity,
+    }));
+    onQuantityChange(id, newQuantity);
+  };
+
+  const handleDecrease = (id: string) => {
+    const newQuantity = Math.max(quantities[id] - 1, 0);
+    setQuantities((prev) => ({
+      ...prev,
+      [id]: newQuantity,
+    }));
+    onQuantityChange(id, newQuantity);
+  };
+
   return (
     <Accordion type="single" collapsible>
       <AccordionItem value="item-1">
@@ -39,20 +71,17 @@ export function ProductBase({ baseData }: ProductBaseProps) {
                   <Button
                     variant="outline"
                     size="icon"
-                    onClick={() =>
-                      console.log(`Decreasing quantity for base ${base.id}`)
-                    }
+                    onClick={() => handleDecrease(base.id)}
                   >
                     -
                   </Button>
-                  <span className="w-8 text-center">0</span>{" "}
-                  {/* Replace with dynamic quantity */}
+                  <span className="w-8 text-center">
+                    {quantities[base.id]}
+                  </span>
                   <Button
                     variant="outline"
                     size="icon"
-                    onClick={() =>
-                      console.log(`Increasing quantity for base ${base.id}`)
-                    }
+                    onClick={() => handleIncrease(base.id)}
                   >
                     +
                   </Button>

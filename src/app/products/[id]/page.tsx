@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
-import ClientComponent from "./ClientComponent"; // Adjust path based on your structure
+import ClientComponent from "./ClientComponent";
 
 // Initialize Prisma
 const prisma = new PrismaClient();
@@ -28,8 +28,16 @@ export default async function ProductPage({
     return <p>Product not found.</p>;
   }
 
-  const { nom, description, image, prix, type, barre, bases, tailles } =
-    productData;
+  const { 
+    nom, 
+    description, 
+    image, 
+    prix, 
+    type, 
+    barre, 
+    bases, 
+    tailles 
+  } = productData;
 
   return (
     <div className="container mx-auto px-4 py-8 ">
@@ -58,13 +66,14 @@ export default async function ProductPage({
                 ${parseFloat(prix).toFixed(2)}
               </div>
 
-              {/* Pass product data to the client-side component */}
               <ClientComponent
+                productId={id}
+                productName={nom}
+                productPrice={parseFloat(prix)}
                 type={type}
                 barre={barre}
                 base={bases}
                 taille={tailles}
-                productId={id} // Pass the product ID to the ClientComponent
               />
             </div>
           </div>
