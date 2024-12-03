@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button } from "./ui/button";
 import { useCart } from "@/hooks/use-cart";
 import { CartItem } from "@/hooks/use-cart";
+import { useRouter } from "next/navigation";
 
 type AddToCartButtonProps = {
   order: CartItem;
@@ -10,10 +11,13 @@ type AddToCartButtonProps = {
 const AddToCartButton = ({ order }: AddToCartButtonProps) => {
   const { addItem } = useCart();
   const [isAdding, setIsAdding] = useState(false);
+  const router = useRouter();
 
   const handleAddToCart = () => {
     addItem(order);
     setIsAdding(true);
+    router.push("/")
+    
 
     // Set timeout to reset the button state
     setTimeout(() => setIsAdding(false), 2000);

@@ -1,13 +1,15 @@
 "use client";
 
 import React from "react";
-import { ShoppingCart, Trash2, Plus, Minus } from "lucide-react";
+import { ShoppingCart, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useCart } from "@/hooks/use-cart";
+import { useRouter } from "next/navigation";
 
 export function CartContent() {
   const { items, removeItem } = useCart();
+  const router = useRouter();
 
   const total = items.reduce((sum, item) => {
     const itemTotal = item.basePrice * item.quantity +
@@ -18,6 +20,10 @@ export function CartContent() {
 
   const handleRemoveItem = (productId: string) => {
     removeItem(productId);
+  };
+
+  const handleCheckout = () => {
+    router.push("/checkout");
   };
 
   return (
@@ -89,7 +95,11 @@ export function CartContent() {
           <p className="text-xl font-bold">${total.toFixed(2)}</p>
         </div>
         
-        <Button className="w-full mt-4 bg-blue-500 text-white hover:bg-blue-600">
+        <Button 
+          className="w-full mt-4 bg-blue-500 text-white hover:bg-blue-600"
+          onClick={handleCheckout}
+          disabled={items.length === 0}
+        >
           <ShoppingCart className="mr-2 h-4 w-4" />
           Checkout
         </Button>

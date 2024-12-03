@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -15,6 +14,7 @@ import { ProductBase } from "./ProductBase";
 import ImageUploader from "@/app/(admin)/dashboard/orders/_components/ImageUploader";
 import AddToCartButton from "@/components/AddToCartButton";
 import { useCart } from "@/hooks/use-cart";
+import { v4 as uuidv4 } from 'uuid';
 
 type ClientComponentProps = {
   productId: string;
@@ -27,6 +27,7 @@ type ClientComponentProps = {
 };
 
 type TailleSelection = {
+  uniqueId: string;
   id: string;
   name: string;
   price: number;
@@ -34,6 +35,7 @@ type TailleSelection = {
 };
 
 type BaseSelection = {
+  uniqueId: string;
   id: string;
   name: string;
   price: number;
@@ -50,9 +52,9 @@ export default function ClientComponent({
   taille,
 }: ClientComponentProps) {
   const { addItem } = useCart();
-  // Comprehensive state to track all product selections
+
   const [selectedOptions, setSelectedOptions] = useState({
-    productId: productId,
+    productId: `${productId}-${uuidv4()}`,
     productName: productName,
     basePrice: productPrice,
     type: null as string | null,
@@ -109,6 +111,7 @@ export default function ClientComponent({
         const tailleDetails = tailleData.find((t) => t.id === tailleId);
         if (tailleDetails) {
           updatedTailles.push({
+            uniqueId: `${tailleId}-${uuidv4()}`,
             id: tailleId,
             name: tailleDetails.name,
             price: tailleDetails.price,
@@ -122,35 +125,6 @@ export default function ClientComponent({
         tailles: updatedTailles,
       };
     });
-  };
-
-  const handleAddToCart = () => {
-    // Validate required selections
-    if (!selectedOptions.type || !selectedOptions.barre) {
-      alert("Please select a type and barre before adding to cart");
-      return;
-    }
-
-    // Prepare cart item
-    const cartItem = {
-      productId: selectedOptions.productId,
-      productName: selectedOptions.productName,
-      basePrice: selectedOptions.basePrice,
-      type: selectedOptions.type,
-      barre: selectedOptions.barre,
-      tailles: selectedOptions.tailles,
-      bases: selectedOptions.bases,
-      quantity: selectedOptions.quantity,
-      uploadedImageUrl: selectedOptions.uploadedImageUrl,
-    };
-
-    // Add to cart
-    addItem(cartItem);
-
-    // Optional: Reset form or show confirmation
-    alert(
-      `${selectedOptions.quantity} ${selectedOptions.productName} added to cart`
-    );
   };
 
   // Handle base quantity changes
@@ -177,6 +151,7 @@ export default function ClientComponent({
         const baseDetails = baseData.find((b) => b.id === baseId);
         if (baseDetails) {
           updatedBases.push({
+            uniqueId: `${baseId}-${uuidv4()}`,
             id: baseId,
             name: baseDetails.name,
             price: baseDetails.price,
@@ -241,7 +216,7 @@ export default function ClientComponent({
           </SelectTrigger>
           <SelectContent>
             {type.map((item, index) => (
-              <SelectItem key={index} value={item}>
+              <SelectItem key={`type-${index}-${item}`} value={item}>
                 {item}
               </SelectItem>
             ))}
@@ -258,7 +233,7 @@ export default function ClientComponent({
           </SelectTrigger>
           <SelectContent>
             {barre.map((item, index) => (
-              <SelectItem key={index} value={item}>
+              <SelectItem key={`barre-${index}-${item}`} value={item}>
                 {item}
               </SelectItem>
             ))}
@@ -301,30 +276,24 @@ export default function ClientComponent({
       <div>
         <h3 className="text-sm font-medium mb-2">Upload Image</h3>
         <ImageUploader onImageUrlChange={handleImageUpload} />
-        {selectedOptions.uploadedImageUrl && (
-          <div className="mt-2">
-            <p className="text-sm">Uploaded Image URL:</p>
-            <p className="text-sm text-blue-600 break-all">
-              {selectedOptions.uploadedImageUrl}
-            </p>
-          </div>
-        )}
       </div>
 
       {/* Add to Cart Button */}
-      <AddToCartButton
-        order={{
-          productId: selectedOptions.productId,
-          productName: selectedOptions.productName,
-          basePrice: selectedOptions.basePrice,
-          type: selectedOptions.type,
-          barre: selectedOptions.barre,
-          tailles: selectedOptions.tailles,
-          bases: selectedOptions.bases,
-          quantity: selectedOptions.quantity,
-          uploadedImageUrl: selectedOptions.uploadedImageUrl,
-        }}
-      />
+      <div className="relative z-0">
+        <AddToCartButton
+          order={{
+            productId: selectedOptions.productId,
+            productName: selectedOptions.productName,
+            basePrice: selectedOptions.basePrice,
+            type: selectedOptions.type,
+            barre: selectedOptions.barre,
+            tailles: selectedOptions.tailles,
+            bases: selectedOptions.bases,
+            quantity: selectedOptions.quantity,
+            uploadedImageUrl: selectedOptions.uploadedImageUrl,
+          }}
+        />
+      </div>
     </div>
   );
 }
