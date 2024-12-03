@@ -1,11 +1,13 @@
 'use client'
 
 import { useCart } from "@/hooks/use-cart";
-import { CartContent } from './CartContent'
+import { CartItemComponent } from './CartItemComponent'
 import { Button } from '@/components/ui/button'
+import { useRouter } from 'next/navigation'
 
 export function Checkout() {
   const { items: cartItems } = useCart()
+  const router = useRouter()
 
   const calculateTotal = () => {
     return cartItems.reduce((total, item) => {
@@ -14,6 +16,11 @@ export function Checkout() {
         item.bases.reduce((baseSum, base) => baseSum + base.price * base.quantity, 0);
       return total + itemTotal;
     }, 0)
+  }
+
+  const handleProceedToPayment = () => {
+    // Add any pre-payment logic here
+    router.push('/payment')
   }
 
   return (
@@ -25,12 +32,9 @@ export function Checkout() {
             <p>Your cart is empty</p>
           ) : (
             cartItems.map(item => (
-              <CartContent
+              <CartItemComponent
                 key={item.productId}
-                
-                // Note: You might need to update the onQuantityChange logic 
-                // based on your cart context implementation
-                 
+                item={item}
               />
             ))
           )}
@@ -54,7 +58,13 @@ export function Checkout() {
               <span>Total:</span>
               <span>${calculateTotal().toFixed(2)}</span>
             </div>
-            <Button className="w-full mt-6">Proceed to Payment</Button>
+            <Button 
+              className="w-full mt-6"
+              onClick={handleProceedToPayment}
+              disabled={cartItems.length === 0}
+            >
+              Proceed to Payment
+            </Button>
           </div>
         </div>
       </div>
