@@ -5,6 +5,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/navbar"; // Navbar will handle session now
 import NavbarClient from "./NavBarClient";
+import { Footer } from "@/components/Footer";
 
 // Custom fonts
 const geistSans = localFont({
@@ -38,6 +39,7 @@ export default function RootLayout({
         {/* Navbar is now handling the session */}
         <NavbarClient/>
         {children}
+        <Footer/>
       </body>
     </html>
   );
