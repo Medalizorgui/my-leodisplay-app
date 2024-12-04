@@ -46,33 +46,34 @@ export function ProductTaille({ tailleData, onQuantityChange }: ProductTaillePro
   };
 
   return (
-    <Accordion type="single" collapsible>
-      <AccordionItem value="item-1">
-        <AccordionTrigger>Product taille</AccordionTrigger>
-        <AccordionContent>
+    <Accordion type="single" collapsible className="w-full">
+      <AccordionItem value="item-1" className="border-b">
+        <AccordionTrigger className="text-lg font-semibold">Product Sizes (Taille)</AccordionTrigger>
+        <AccordionContent className="pt-4">
           <div>
-            <h3 className="text-lg font-semibold">Available Sizes (Taille)</h3>
             {tailleData.map((taille) => (
               <div
                 key={taille.id}
-                className="flex items-center space-x-4 p-4 border rounded-lg"
+                className="flex items-center space-x-4 p-4 border rounded-lg mb-4 hover:bg-gray-50 transition-colors"
               >
-                <Image
-                  src={taille.image}
-                  alt={taille.name}
-                  width={100}
-                  height={100}
-                  className="rounded-md"
-                />
+                <div className="relative w-24 h-24">
+                  <Image
+                    src={taille.image}
+                    alt={taille.name}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-md"
+                  />
+                </div>
                 <div className="flex-grow">
-                  <h3 className="font-semibold">{taille.name}</h3>
-                  <p className="font-bold mt-2">${taille.price.toFixed(2)}</p>
+                  <h3 className="font-semibold text-lg">{taille.name}</h3>
+                  <p className="font-bold mt-2 text-primary">${taille.price.toFixed(2)}</p>
                   {taille.downloadlink && (
                     <a
                       href={taille.downloadlink}
-                      className="text-blue-600 hover:underline text-sm"
+                      className="text-blue-600 hover:underline text-sm mt-2 inline-block"
                     >
-                      Download
+                      Download Size Guide
                     </a>
                   )}
                 </div>
@@ -81,16 +82,18 @@ export function ProductTaille({ tailleData, onQuantityChange }: ProductTaillePro
                     variant="outline"
                     size="icon"
                     onClick={() => handleDecrease(taille.id)}
+                    className="h-8 w-8"
                   >
                     -
                   </Button>
-                  <span className="w-8 text-center">
+                  <span className="w-8 text-center text-lg">
                     {quantities[taille.id]}
                   </span>
                   <Button
                     variant="outline"
                     size="icon"
                     onClick={() => handleIncrease(taille.id)}
+                    className="h-8 w-8"
                   >
                     +
                   </Button>
@@ -103,3 +106,4 @@ export function ProductTaille({ tailleData, onQuantityChange }: ProductTaillePro
     </Accordion>
   );
 }
+

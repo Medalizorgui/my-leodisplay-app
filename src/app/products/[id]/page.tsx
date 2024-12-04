@@ -41,28 +41,24 @@ export default async function ProductPage({
 
   return (
     <div className="container mx-auto px-4 py-8 ">
-      <Card className="overflow-hidden">
+      <Card className="overflow-hidden shadow-lg rounded-xl">
         <CardContent className="p-6">
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="relative">
-              <div className="flex items-center justify-center sticky top-4">
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <div className="relative col-span-1 lg:col-span-2">
+              <div className="flex items-center justify-center sticky top-4 h-[400px] md:h-[500px] lg:h-[600px]">
                 <Image
                   alt={nom}
-                  className="rounded-lg object-cover"
-                  height={400}
+                  className="rounded-lg object-cover w-full h-full"
                   src={image || "/placeholder.svg"}
-                  style={{
-                    aspectRatio: "400/400",
-                    objectFit: "cover",
-                  }}
-                  width={400}
+                  layout="fill"
+                  objectFit="cover"
                 />
               </div>
             </div>
-            <div className="flex flex-col justify-center space-y-4">
-              <h1 className="text-3xl font-bold">{nom}</h1>
-              <p className="text-gray-500 dark:text-gray-400">{description}</p>
-              <div className="text-2xl font-bold">
+            <div className="flex flex-col justify-start space-y-6 lg:col-span-1">
+              <h1 className="text-3xl font-bold tracking-tight">{nom}</h1>
+              <p className="text-lg text-gray-600 dark:text-gray-300">{description}</p>
+              <div className="text-3xl font-bold text-primary">
                 ${parseFloat(prix).toFixed(2)}
               </div>
               <ClientComponentWrapper
@@ -81,3 +77,4 @@ export default async function ProductPage({
     </div>
   );
 }
+

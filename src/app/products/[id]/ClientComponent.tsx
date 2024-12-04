@@ -194,39 +194,53 @@ export default function ClientComponent({
   };
 
   return (
-    <div className="space-y-4">
-      {/* Type Selector */}
-      <div>
-        <h3 className="text-sm font-medium">Product Type:</h3>
-        <Select onValueChange={handleTypeSelect}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select a type" />
-          </SelectTrigger>
-          <SelectContent>
-            {type.map((item, index) => (
-              <SelectItem key={`type-${index}-${item}`} value={item}>
-                {item}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+    <div className="space-y-6">
+      {/* Quantity Selector */}
+      <div className="flex items-center space-x-4">
+        <label htmlFor="quantity" className="text-sm font-medium">
+          Quantity:
+        </label>
+        <Input
+          id="quantity"
+          type="number"
+          min="1"
+          value={selectedOptions.quantity}
+          onChange={handleQuantityChange}
+          className="w-24"
+        />
       </div>
-
-      {/* Barre Selector */}
-      <div>
-        <h3 className="text-sm font-medium">Product Barre:</h3>
-        <Select onValueChange={handleBarreSelect}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select a barre" />
-          </SelectTrigger>
-          <SelectContent>
-            {barre.map((item, index) => (
-              <SelectItem key={`barre-${index}-${item}`} value={item}>
-                {item}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      {/* Type and Barre Selectors */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <h3 className="text-sm font-medium mb-2">Product Type:</h3>
+          <Select onValueChange={handleTypeSelect}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select a type" />
+            </SelectTrigger>
+            <SelectContent>
+              {type.map((item, index) => (
+                <SelectItem key={`type-${index}-${item}`} value={item}>
+                  {item}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div>
+          <h3 className="text-sm font-medium mb-2">Product Barre:</h3>
+          <Select onValueChange={handleBarreSelect}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select a barre" />
+            </SelectTrigger>
+            <SelectContent>
+              {barre.map((item, index) => (
+                <SelectItem key={`barre-${index}-${item}`} value={item}>
+                  {item}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       {/* Product Taille Component */}
@@ -245,30 +259,18 @@ export default function ClientComponent({
         />
       )}
 
-      {/* Quantity Selector */}
-      <div className="flex items-center space-x-2">
-        <label htmlFor="quantity" className="text-sm font-medium">
-          Quantity:
-        </label>
-        <Input
-          id="quantity"
-          type="number"
-          min="1"
-          value={selectedOptions.quantity}
-          onChange={handleQuantityChange}
-          className="w-20"
-        />
-      </div>
+      
 
       {/* Image Uploader */}
-      <div>
+      <div className="bg-gray-50 p-4 rounded-lg">
         <h3 className="text-sm font-medium mb-2">Upload Image</h3>
         <ImageUploader onImageUrlChange={handleImageUpload} />
       </div>
 
       {/* Conditional Button */}
-      <div className="relative z-0">
+      <div className="mt-6">
         {isAuthenticated ? (
+          <div className="w-full py-3 text-lg font-semibold">
           <AddToCartButton
             order={{
               productId: selectedOptions.productId,
@@ -281,10 +283,12 @@ export default function ClientComponent({
               quantity: selectedOptions.quantity,
               uploadedImageUrl: selectedOptions.uploadedImageUrl,
             }}
+            
           />
+          </div>
         ) : (
           <button
-            className="bg-[hsl(47.9,95.8%,53.1%)] text-white py-2 px-4 rounded-lg hover:brightness-90 transition-all duration-200 w-full"
+            className="bg-primary text-primary-foreground py-3 px-4 rounded-lg hover:bg-primary/90 transition-all duration-200 w-full text-lg font-semibold"
             onClick={handleLoginClick} // Navigate to the sign-in page
           >
             Login to Add to Cart
@@ -294,3 +298,4 @@ export default function ClientComponent({
     </div>
   );
 }
+
