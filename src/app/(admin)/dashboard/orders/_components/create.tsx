@@ -22,7 +22,7 @@ export default function CreateOrder() {
   const form = useForm<OrderSchema>({
     resolver: zodResolver(orderSchema),
     defaultValues: {
-      orderGroupId: 1, // Add default value
+      orderGroupId: '1', // Add default value
       status: "attente", // default to 'pending'
       image: "",
       qty: 1,
@@ -94,7 +94,7 @@ export default function CreateOrder() {
         )}
         <OrderForm
           defaultValues={{
-            orderGroupId: 1, // Add default value
+            orderGroupId: '1', // Add default value
             status: "attente", // default to 'pending'
             image: "",
             qty: 1,

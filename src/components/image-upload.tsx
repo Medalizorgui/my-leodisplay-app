@@ -4,14 +4,13 @@ import { Progress } from '@/components/ui/progress'
 import { useToast } from '@/hooks/use-toast'
 import { useUploadThing } from '@/utils/uploadthing'
 import { cn } from '@/lib/utils'
-import { Image, Loader2, MousePointerSquareDashed } from 'lucide-react'
+import { Image, Loader2, MousePointerSquareDashed, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import Dropzone, { FileRejection } from 'react-dropzone'
 
-// Define an interface for the props
 interface UploadComponentProps {
   onUploadComplete: (url: string) => void;
-  className?: string; // This prop is optional
+  className?: string;
 }
 
 const UploadImageComponent: React.FC<UploadComponentProps> = ({ onUploadComplete }) => {
@@ -20,25 +19,23 @@ const UploadImageComponent: React.FC<UploadComponentProps> = ({ onUploadComplete
   const [uploadProgress, setUploadProgress] = useState<number>(0)
   const [previewImage, setPreviewImage] = useState<string | null>(null)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [isConfirmed, setIsConfirmed] = useState<boolean>(false)
 
   const { startUpload, isUploading } = useUploadThing('imageUploader', {
     onClientUploadComplete: ([data]) => {
-      const uploadedImageUrl = data.url; // Get the uploaded image URL
+      const uploadedImageUrl = data.url;
 
-      // Ensure the URL is valid before passing it to the parent
       if (uploadedImageUrl) {
-        // Pass the image URL to the parent
         onUploadComplete(uploadedImageUrl);
         console.log(uploadedImageUrl);
 
-        // Show success toast
         toast({
           title: 'Upload Successful',
           description: 'Your image has been uploaded successfully.',
           variant: 'success',
         })
+        setIsConfirmed(true)
       } else {
-        // Handle error if URL is not returned
         toast({
           title: 'Upload Failed',
           description: 'There was an error uploading your image.',
@@ -64,14 +61,15 @@ const UploadImageComponent: React.FC<UploadComponentProps> = ({ onUploadComplete
 
   const onDropAccepted = (acceptedFiles: File[]) => {
     const file = acceptedFiles[0]
-    setPreviewImage(URL.createObjectURL(file)) // Set preview image
-    setSelectedFile(file) // Store the file to upload
+    setPreviewImage(URL.createObjectURL(file))
+    setSelectedFile(file)
     setIsDragOver(false)
+    setIsConfirmed(false)
   }
 
   const handleUpload = () => {
     if (selectedFile) {
-      startUpload([selectedFile], { configId: 'imageUploader' }) // Start the upload with the selected file
+      startUpload([selectedFile], { configId: 'imageUploader' })
     } else {
       toast({
         title: 'No file selected',
@@ -79,6 +77,12 @@ const UploadImageComponent: React.FC<UploadComponentProps> = ({ onUploadComplete
         variant: 'destructive',
       })
     }
+  }
+
+  const handleDelete = () => {
+    setPreviewImage(null)
+    setSelectedFile(null)
+    setIsConfirmed(false)
   }
 
   return (
@@ -92,8 +96,8 @@ const UploadImageComponent: React.FC<UploadComponentProps> = ({ onUploadComplete
     >
       <div className='relative flex flex-1 flex-col items-center justify-center w-full'>
         {previewImage ? (
-          <div className="relative">
-            <img src={previewImage} alt="Uploaded preview" className="w-48 h-48 object-cover rounded-md" />
+          <div className="relative flex flex-col items-center">
+            <img src={previewImage} alt="Uploaded preview" className="w-48 h-48 object-cover rounded-md mb-4" />
             {isUploading && (
               <div className='flex flex-col items-center mt-4'>
                 <p>Uploading...</p>
@@ -103,13 +107,21 @@ const UploadImageComponent: React.FC<UploadComponentProps> = ({ onUploadComplete
                 />
               </div>
             )}
-            {!isUploading && (
-              <button
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
-                onClick={handleUpload}
-              >
-                Upload Image
-              </button>
+            {!isConfirmed && (
+              <div className='flex space-x-4'>
+                <button
+                  className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                  onClick={handleUpload}
+                >
+                  Upload Image
+                </button>
+                <button
+                  className="px-4 py-2 bg-red-500 text-white rounded-md flex items-center"
+                  onClick={handleDelete}
+                >
+                  <Trash2 className='mr-2 h-4 w-4' /> Delete
+                </button>
+              </div>
             )}
           </div>
         ) : (

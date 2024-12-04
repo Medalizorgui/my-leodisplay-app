@@ -119,6 +119,19 @@ export default function OrderForm({
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="orderGroupId"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>orderGroupId</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="order group id..." />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           <FormField
             control={form.control}

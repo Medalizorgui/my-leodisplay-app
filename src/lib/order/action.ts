@@ -8,9 +8,7 @@ import { redirect } from "next/navigation";
 // Define the schema for order data validation
 const OrderSchema = z.object({
   orderGroupId: z
-    .number()
-    .int()
-    .positive({ message: "Order group ID must be a positive integer" }),
+    .string(),
   status: z.enum(["livree", "attente"], {
     message: "Status must be 'delivered' or 'pending'",
   }),
@@ -25,10 +23,10 @@ const OrderSchema = z.object({
 
   // Validating selected values from the product options
   selectedType: z.string().optional(),
-  selectedBase : z.string().min(1).optional(),
-  baseQuantity: z.number().int().positive().optional(),
-  selectedTaille : z.string().min(1).optional(),
-  tailleQuantity : z.number().int().positive().optional(),
+  selectedBase : z.string().optional(),
+  baseQuantity: z.number().int().optional(),
+  selectedTaille : z.string().optional(),
+  tailleQuantity : z.number().int().optional(),
   selectedBarre: z
     .string()
     .min(1, { message: "Product barre selection is required" }).optional(),

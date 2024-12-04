@@ -40,6 +40,7 @@ export default async function ProductPage({
   } = productData;
 
   return (
+    <div className="bg-gray-200 w-full h-full">
     <div className="container mx-auto px-4 py-8 ">
       <Card className="overflow-hidden shadow-lg rounded-xl">
         <CardContent className="p-6">
@@ -74,6 +75,7 @@ export default async function ProductPage({
           </div>
         </CardContent>
       </Card>
+    </div>
     </div>
   );
 }

@@ -52,7 +52,7 @@ model Taille {
 
 model Order {
   id             Int      @id @default(autoincrement())
-  orderGroupId   Int      // Group ID to identify products in the same order
+  orderGroupId   String      // Group ID to identify products in the same order
   status         String // Changed to use the enum
   image          String   // Product image URL or path
   qty            Int      // Total quantity ordered for the product

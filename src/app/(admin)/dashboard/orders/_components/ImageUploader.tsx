@@ -28,13 +28,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUrlChange }) => {
       {/* Image upload component */}
       <UploadImageComponent onUploadComplete={handleImageUpload} />
       
-      {/* Optional: Display the uploaded image preview */}
-      {imageUrl && (
-        <div className="mt-4">
-          <p>Uploaded Image:</p>
-          <img src={imageUrl} alt="Uploaded preview" className="w-48 h-48 object-cover rounded-md" />
-        </div>
-      )}
+      
     </div>
   )
 }

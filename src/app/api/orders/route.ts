@@ -28,16 +28,16 @@ export async function POST(request: NextRequest) {
         status: parsedData.status || "attente",
         image: parsedData.image || "",
         qty: parsedData.qty || 1,
-        orderGroupId: parsedData.orderGroupId || 1, // Default to 1 if not provided
+        orderGroupId: parsedData.orderGroupId || '1', // Default to 1 if not provided
         email: parsedData.email,
         name: parsedData.name,
         productNom: parsedData.productNom,
-        selectedType: parsedData.selectedType || "",
+        selectedType: parsedData.selectedType || null,
         selectedBaseName: parsedData.selectedBase || "",
         baseQuantity: parsedData.baseQuantity || 0,
         selectedTailleName: parsedData.selectedTaille || "",
         tailleQuantity : parsedData.tailleQuantity || 0,
-        selectedBarre: parsedData.selectedBarre || "",
+        selectedBarre: parsedData.selectedBarre || null,
       },
     });
     return NextResponse.json(order, { status: 201 });

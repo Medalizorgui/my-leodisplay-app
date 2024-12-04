@@ -47,10 +47,10 @@ export function ProductBase({ baseData, onQuantityChange }: ProductBaseProps) {
   return (
     <Accordion type="single" collapsible className="w-full">
       <AccordionItem value="item-1" className="border-b">
-        <AccordionTrigger className="text-lg font-semibold">Product Base</AccordionTrigger>
+        <AccordionTrigger className="text-lg font-semibold">Base de produit</AccordionTrigger>
         <AccordionContent className="pt-4">
           <div>
-            <h3 className="text-lg font-semibold">Available Base</h3>
+            <h3 className="text-lg font-semibold">Nos Bases</h3>
             {baseData.map((base) => (
               <div
                 key={base.id}

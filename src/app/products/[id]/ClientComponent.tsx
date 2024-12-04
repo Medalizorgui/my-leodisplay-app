@@ -198,7 +198,7 @@ export default function ClientComponent({
       {/* Quantity Selector */}
       <div className="flex items-center space-x-4">
         <label htmlFor="quantity" className="text-sm font-medium">
-          Quantity:
+          Quantite:
         </label>
         <Input
           id="quantity"
@@ -212,7 +212,7 @@ export default function ClientComponent({
       {/* Type and Barre Selectors */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <h3 className="text-sm font-medium mb-2">Product Type:</h3>
+          <h3 className="text-sm font-medium mb-2">Type de produit:</h3>
           <Select onValueChange={handleTypeSelect}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select a type" />
@@ -227,7 +227,7 @@ export default function ClientComponent({
           </Select>
         </div>
         <div>
-          <h3 className="text-sm font-medium mb-2">Product Barre:</h3>
+          <h3 className="text-sm font-medium mb-2">Barre de produit:</h3>
           <Select onValueChange={handleBarreSelect}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select a barre" />
@@ -263,7 +263,7 @@ export default function ClientComponent({
 
       {/* Image Uploader */}
       <div className="bg-gray-50 p-4 rounded-lg">
-        <h3 className="text-sm font-medium mb-2">Upload Image</h3>
+        <h3 className="text-sm font-medium mb-2">Telecharger un image</h3>
         <ImageUploader onImageUrlChange={handleImageUpload} />
       </div>
 
@@ -291,7 +291,7 @@ export default function ClientComponent({
             className="bg-primary text-primary-foreground py-3 px-4 rounded-lg hover:bg-primary/90 transition-all duration-200 w-full text-lg font-semibold"
             onClick={handleLoginClick} // Navigate to the sign-in page
           >
-            Login to Add to Cart
+            se connecter
           </button>
         )}
       </div>

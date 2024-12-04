@@ -48,7 +48,7 @@ export function ProductTaille({ tailleData, onQuantityChange }: ProductTaillePro
   return (
     <Accordion type="single" collapsible className="w-full">
       <AccordionItem value="item-1" className="border-b">
-        <AccordionTrigger className="text-lg font-semibold">Product Sizes (Taille)</AccordionTrigger>
+        <AccordionTrigger className="text-lg font-semibold">Taille de produit</AccordionTrigger>
         <AccordionContent className="pt-4">
           <div>
             {tailleData.map((taille) => (

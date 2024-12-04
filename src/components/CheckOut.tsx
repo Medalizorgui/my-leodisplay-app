@@ -6,10 +6,13 @@ import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
+import { useState } from 'react';
+import { toast } from 'sonner'; // Assuming you're using sonner for notifications
 
 export function Checkout() {
-  const { items: cartItems } = useCart()
+  const { items: cartItems, clearCart } = useCart()
   const router = useRouter()
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const calculateTotal = () => {
     return cartItems.reduce((total, item) => {
@@ -20,9 +23,60 @@ export function Checkout() {
     }, 0)
   }
 
-  const handleProceedToPayment = () => {
-    // Add any pre-payment logic here
-    router.push('/payment')
+  const handleProceedToPayment = async () => {
+    if (cartItems.length === 0) return;
+
+    setIsSubmitting(true);
+
+    try {
+      // Create orders for each cart item
+      const orderPromises = cartItems.map(async (item) => {
+        const response = await fetch('/api/orders', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            productNom: item.productName,
+            qty: item.quantity,
+            selectedType: item.type,
+            selectedBarre: item.barre,
+            selectedBase: item.bases.length > 0 ? item.bases[0].name : '',
+            baseQuantity: item.bases.reduce((sum, base) => sum + base.quantity, 0),
+            selectedTaille: item.tailles.length > 0 ? item.tailles[0].name : '',
+            tailleQuantity: item.tailles.reduce((sum, taille) => sum + taille.quantity, 0),
+            status: 'attente',
+            image: item.uploadedImageUrl,
+            email: 'zorguimohamedali25@gmail.com', // You might want to get this from user context or input
+            name: 'dali', // You might want to get this from user context or input
+            orderGroupId: item.productId,
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to create order');
+        }
+
+        return response.json();
+      });
+
+      // Wait for all orders to be created
+      await Promise.all(orderPromises);
+
+      // Clear the cart
+      clearCart();
+
+      // Show success toast
+      toast.success('Commande passée avec succès');
+
+      // Redirect to payment or confirmation page
+      router.push('/merci');
+    } catch (error) {
+      console.error('Order creation error:', error);
+      toast.error('Échec de la création de la commande');
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   const subtotal = calculateTotal()
@@ -75,9 +129,9 @@ export function Checkout() {
               <Button 
                 className="w-full"
                 onClick={handleProceedToPayment}
-                disabled={cartItems.length === 0}
+                disabled={cartItems.length === 0 || isSubmitting}
               >
-                Proceed to Payment
+                {isSubmitting ? 'Traitement...' : 'Passer l\'ordre'}
               </Button>
             </CardFooter>
           </Card>
@@ -86,4 +140,3 @@ export function Checkout() {
     </div>
   )
 }
-
