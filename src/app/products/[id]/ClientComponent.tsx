@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react"; // Import useSession for session handling
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -14,7 +15,8 @@ import { ProductBase } from "./ProductBase";
 import ImageUploader from "@/app/(admin)/dashboard/orders/_components/ImageUploader";
 import AddToCartButton from "@/components/AddToCartButton";
 import { useCart } from "@/hooks/use-cart";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
+import { useRouter } from "next/navigation";
 
 type ClientComponentProps = {
   productId: string;
@@ -52,6 +54,8 @@ export default function ClientComponent({
   taille,
 }: ClientComponentProps) {
   const { addItem } = useCart();
+  const { data: session } = useSession(); // Get session data
+  const isAuthenticated = !!session;
 
   const [selectedOptions, setSelectedOptions] = useState({
     productId: `${productId}-${uuidv4()}`,
@@ -68,15 +72,12 @@ export default function ClientComponent({
   const [tailleData, setTailleData] = useState<any[]>([]);
   const [baseData, setBaseData] = useState<any[]>([]);
 
-  // Fetch tailles and base data based on productId
   useEffect(() => {
     const fetchData = async () => {
-      // Fetch tailles
       const tailleResponse = await fetch(`/api/taille?productId=${productId}`);
       const tailleData = await tailleResponse.json();
       setTailleData(tailleData);
 
-      // Fetch base data
       const baseResponse = await fetch(`/api/base?productId=${productId}`);
       const baseData = await baseResponse.json();
       setBaseData(baseData);
@@ -85,10 +86,8 @@ export default function ClientComponent({
     fetchData();
   }, [productId]);
 
-  // Handle taille quantity changes
   const handleTailleQuantityChange = (tailleId: string, quantity: number) => {
     setSelectedOptions((prev) => {
-      // Find the taille in the existing selections
       const existingTailleIndex = prev.tailles.findIndex(
         (t) => t.id === tailleId
       );
@@ -96,18 +95,15 @@ export default function ClientComponent({
       let updatedTailles = [...prev.tailles];
 
       if (existingTailleIndex !== -1) {
-        // If taille exists, update its quantity
         if (quantity > 0) {
           updatedTailles[existingTailleIndex] = {
             ...updatedTailles[existingTailleIndex],
             quantity,
           };
         } else {
-          // Remove taille if quantity is 0
           updatedTailles = updatedTailles.filter((t) => t.id !== tailleId);
         }
       } else if (quantity > 0) {
-        // If taille doesn't exist and quantity > 0, add it
         const tailleDetails = tailleData.find((t) => t.id === tailleId);
         if (tailleDetails) {
           updatedTailles.push({
@@ -127,27 +123,22 @@ export default function ClientComponent({
     });
   };
 
-  // Handle base quantity changes
   const handleBaseQuantityChange = (baseId: string, quantity: number) => {
     setSelectedOptions((prev) => {
-      // Find the base in the existing selections
       const existingBaseIndex = prev.bases.findIndex((b) => b.id === baseId);
 
       let updatedBases = [...prev.bases];
 
       if (existingBaseIndex !== -1) {
-        // If base exists, update its quantity
         if (quantity > 0) {
           updatedBases[existingBaseIndex] = {
             ...updatedBases[existingBaseIndex],
             quantity,
           };
         } else {
-          // Remove base if quantity is 0
           updatedBases = updatedBases.filter((b) => b.id !== baseId);
         }
       } else if (quantity > 0) {
-        // If base doesn't exist and quantity > 0, add it
         const baseDetails = baseData.find((b) => b.id === baseId);
         if (baseDetails) {
           updatedBases.push({
@@ -167,7 +158,6 @@ export default function ClientComponent({
     });
   };
 
-  // Handle type selection
   const handleTypeSelect = (selectedType: string) => {
     setSelectedOptions((prev) => ({
       ...prev,
@@ -175,7 +165,6 @@ export default function ClientComponent({
     }));
   };
 
-  // Handle barre selection
   const handleBarreSelect = (selectedBarre: string) => {
     setSelectedOptions((prev) => ({
       ...prev,
@@ -183,7 +172,6 @@ export default function ClientComponent({
     }));
   };
 
-  // Handle main quantity change
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value);
     setSelectedOptions((prev) => ({
@@ -192,7 +180,6 @@ export default function ClientComponent({
     }));
   };
 
-  // Handle image upload
   const handleImageUpload = (url: string) => {
     setSelectedOptions((prev) => ({
       ...prev,
@@ -200,10 +187,11 @@ export default function ClientComponent({
     }));
   };
 
-  // Optional: Log selected options (you can remove this in production)
-  useEffect(() => {
-    console.log("Selected Options:", selectedOptions);
-  }, [selectedOptions]);
+  const router = useRouter(); // Initialize useRouter
+
+  const handleLoginClick = () => {
+    router.push("/sign-in"); // Redirect to the sign-in page
+  };
 
   return (
     <div className="space-y-4">
@@ -278,21 +266,30 @@ export default function ClientComponent({
         <ImageUploader onImageUrlChange={handleImageUpload} />
       </div>
 
-      {/* Add to Cart Button */}
+      {/* Conditional Button */}
       <div className="relative z-0">
-        <AddToCartButton
-          order={{
-            productId: selectedOptions.productId,
-            productName: selectedOptions.productName,
-            basePrice: selectedOptions.basePrice,
-            type: selectedOptions.type,
-            barre: selectedOptions.barre,
-            tailles: selectedOptions.tailles,
-            bases: selectedOptions.bases,
-            quantity: selectedOptions.quantity,
-            uploadedImageUrl: selectedOptions.uploadedImageUrl,
-          }}
-        />
+        {isAuthenticated ? (
+          <AddToCartButton
+            order={{
+              productId: selectedOptions.productId,
+              productName: selectedOptions.productName,
+              basePrice: selectedOptions.basePrice,
+              type: selectedOptions.type,
+              barre: selectedOptions.barre,
+              tailles: selectedOptions.tailles,
+              bases: selectedOptions.bases,
+              quantity: selectedOptions.quantity,
+              uploadedImageUrl: selectedOptions.uploadedImageUrl,
+            }}
+          />
+        ) : (
+          <button
+            className="bg-[hsl(47.9,95.8%,53.1%)] text-white py-2 px-4 rounded-lg hover:brightness-90 transition-all duration-200 w-full"
+            onClick={handleLoginClick} // Navigate to the sign-in page
+          >
+            Login to Add to Cart
+          </button>
+        )}
       </div>
     </div>
   );

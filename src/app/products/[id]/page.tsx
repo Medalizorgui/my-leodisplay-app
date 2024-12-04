@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import ClientComponent from "./ClientComponent";
-
+import ClientComponentWrapper from "./ClientComponentCaller";
 // Initialize Prisma
 const prisma = new PrismaClient();
 
@@ -65,8 +65,7 @@ export default async function ProductPage({
               <div className="text-2xl font-bold">
                 ${parseFloat(prix).toFixed(2)}
               </div>
-
-              <ClientComponent
+              <ClientComponentWrapper
                 productId={id}
                 productName={nom}
                 productPrice={parseFloat(prix)}

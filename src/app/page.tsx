@@ -40,11 +40,25 @@ export default async function Home() {
     <div className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-200">
       <main className="container mx-auto px-4 py-8">
         <section className="mb-12 text-center">
-          <h2 className="text-4xl font-bold mb-4" style={{ color: "hsl(47.9, 95.8%, 53.1%)" }}>Welcome to LeoDisplay</h2>
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div>
+            <h2 className="text-4xl font-bold mb-4" style={{ color: "hsl(47.9, 95.8%, 53.1%)" }}>Bienvenue au LeoDisplay</h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             LEO DISPLAY est la première marque tunisienne qui fabrique des supports publicitaires 100% conçus et réalisés en Tunisie avec des normes européennes.
-            Tous nos produits sont conçus et réalisés avec des matériaux de haute qualité.
+            Tous nos produits sont conçus et réalisés avec des matériaux de haute qualité.Notre bureau d’étude fait en sorte que nos produits soient faciles à monter et démonter, toute en tenant compte des contraintes de chaque client.
+            Notre département PRINT est constitué d’un studio graphique dédié et d’une panoplie de machines de dernière génération et de haute performance, soit en sublimation soit en numérique grand format.
           </p>
+            </div>
+            <div className="relative h-64 md:h-full">
+          <Image
+            src="/next.svg"
+            alt="Introduction Image"
+            layout="fill"
+            objectFit="cover"
+            className="rounded-lg"
+          />
+        </div>
+          </div>
         </section>
 
         {/* Products Section */}
