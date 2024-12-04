@@ -32,34 +32,34 @@ model Product {
 
 model Base {
   id           Int      @id @default(autoincrement())
-  name         String   @unique// Name of the base
+  name         String   @unique // Name of the base
   image        String   // URL to the image
   price        Float    // Price for this base
   productId    Int
   product      Product  @relation(fields: [productId], references: [id])
-  
 }
 
 model Taille {
-  id           Int      @id @default(autoincrement())
-  name         String   @unique// Name of the taille
-  image        String   // URL to the image
-  downloyadLink String?  // Optional download link
-  price        Float    // Price for this taille
-  productId    Int
-  product      Product  @relation(fields: [productId], references: [id])
-  
+  id             Int      @id @default(autoincrement())
+  name           String   @unique // Name of the taille
+  image          String   // URL to the image
+  downloadLinks  String[] // Multiple optional download links
+  ficheTechniqueLink String? // Optional fiche technique link
+  price          Float    // Price for this taille
+  productId      Int
+  product        Product  @relation(fields: [productId], references: [id])
 }
 
 model Order {
   id             Int      @id @default(autoincrement())
   orderGroupId   Int      // Group ID to identify products in the same order
-  status         String   // 'delivered' or 'pending'
+  status         String // Changed to use the enum
   image          String   // Product image URL or path
   qty            Int      // Total quantity ordered for the product
   email          String   // FK from Customer
   name           String   // FK from Customer's name
   productNom     String   // FK from Product.nom
+  orderDate      DateTime @default(now()) // Added order date with default to current timestamp
 
   // Fields to store specific selections
   selectedBaseName   String?     
@@ -69,7 +69,6 @@ model Order {
 
   selectedType   String?
   selectedBarre  String?  // Selected value from Product.barre
-
 
   product        Product  @relation(fields: [productNom], references: [nom])
   customer       Customer @relation(fields: [email], references: [email])
