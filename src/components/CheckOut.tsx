@@ -4,6 +4,8 @@ import { useCart } from "@/hooks/use-cart";
 import { CartItemComponent } from './CartItemComponent'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
 
 export function Checkout() {
   const { items: cartItems } = useCart()
@@ -23,13 +25,21 @@ export function Checkout() {
     router.push('/payment')
   }
 
+  const subtotal = calculateTotal()
+  const tax = subtotal * 0.1 // Assuming 10% tax rate
+  const total = subtotal + tax
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Checkout</h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="md:col-span-2">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-6">
           {cartItems.length === 0 ? (
-            <p>Your cart is empty</p>
+            <Card>
+              <CardContent className="pt-6">
+                <p className="text-center text-muted-foreground">Your cart is empty</p>
+              </CardContent>
+            </Card>
           ) : (
             cartItems.map(item => (
               <CartItemComponent
@@ -39,35 +49,41 @@ export function Checkout() {
             ))
           )}
         </div>
-        <div className="md:col-span-1">
-          <div className="bg-gray-100 p-6 rounded-lg">
-            <h2 className="text-2xl font-semibold mb-4">Order Summary</h2>
-            <div className="flex justify-between mb-2">
-              <span>Subtotal:</span>
-              <span>${calculateTotal().toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between mb-2">
-              <span>Shipping:</span>
-              <span>$0.00</span>
-            </div>
-            <div className="flex justify-between mb-4">
-              <span>Tax:</span>
-              <span>$0.00</span>
-            </div>
-            <div className="flex justify-between text-xl font-semibold">
-              <span>Total:</span>
-              <span>${calculateTotal().toFixed(2)}</span>
-            </div>
-            <Button 
-              className="w-full mt-6"
-              onClick={handleProceedToPayment}
-              disabled={cartItems.length === 0}
-            >
-              Proceed to Payment
-            </Button>
-          </div>
+        <div className="lg:col-span-1">
+          <Card>
+            <CardHeader>
+              <CardTitle>Order Summary</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Subtotal</span>
+                  <span>${subtotal.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Tax</span>
+                  <span>${tax.toFixed(2)}</span>
+                </div>
+              </div>
+              <Separator className="my-4" />
+              <div className="flex justify-between text-lg font-semibold">
+                <span>Total</span>
+                <span>${total.toFixed(2)}</span>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button 
+                className="w-full"
+                onClick={handleProceedToPayment}
+                disabled={cartItems.length === 0}
+              >
+                Proceed to Payment
+              </Button>
+            </CardFooter>
+          </Card>
         </div>
       </div>
     </div>
   )
 }
+
