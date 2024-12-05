@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     const order = await prisma.order.create({
       data: {
         status: parsedData.status || "attente",
-        image: parsedData.image || "",
+        image: parsedData.image || null,
         qty: parsedData.qty || 1,
         orderGroupId: parsedData.orderGroupId || '1', // Default to 1 if not provided
         email: parsedData.email,

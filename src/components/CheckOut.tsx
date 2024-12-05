@@ -8,8 +8,10 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Separator } from "@/components/ui/separator"
 import { useState } from 'react';
 import { toast } from 'sonner'; // Assuming you're using sonner for notifications
+import { useSession } from "next-auth/react";
 
 export function Checkout() {
+  const {data: session} = useSession()
   const { items: cartItems, clearCart } = useCart()
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -47,8 +49,8 @@ export function Checkout() {
             tailleQuantity: item.tailles.reduce((sum, taille) => sum + taille.quantity, 0),
             status: 'attente',
             image: item.uploadedImageUrl,
-            email: 'zorguimohamedali25@gmail.com', // You might want to get this from user context or input
-            name: 'dali', // You might want to get this from user context or input
+            email: session?.user?.email || '', // You might want to get this from user context or input
+            name: session?.user?.name || '', // You might want to get this from user context or input
             orderGroupId: item.productId,
           })
         });

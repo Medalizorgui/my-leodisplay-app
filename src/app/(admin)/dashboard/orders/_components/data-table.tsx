@@ -46,7 +46,11 @@ const groupOrdersByDate = (data: Order[]) => {
     return acc;
   }, {} as Record<string, Order[]>);
 
-  return groupedOrders;
+  return Object.fromEntries(
+    Object.entries(groupedOrders).sort(([dateA], [dateB]) => {
+      return new Date(dateB).getTime() - new Date(dateA).getTime();
+    })
+  );
 };
 
 export default function ProductsTable({ data }: { data: Order[] }) {
@@ -72,7 +76,6 @@ export default function ProductsTable({ data }: { data: Order[] }) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            {/* Placeholder for column visibility - you'll need to adjust this */}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

@@ -23,9 +23,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import Image from "next/image";
 
 interface OrderFormProps {
-  defaultValues: OrderSchema;
+  defaultValues: OrderSchema & { existingImage?: string };
   onSubmit: (data: OrderSchema) => Promise<void>;
   submitButtonText: string;
   isSubmitting: boolean;
@@ -43,7 +44,8 @@ export default function OrderForm({
   });
 
   const [productNames, setProductNames] = useState<string[]>([]);
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(defaultValues.image || null);
+  const [isNewImageUploaded, setIsNewImageUploaded] = useState(false);
 
   useEffect(() => {
     // Fetch product names from the API
@@ -58,7 +60,7 @@ export default function OrderForm({
         }
 
         const products = await response.json();
-        const names = products.map((product: { nom: string }) => product.nom); // Adjust based on your API's data structure
+        const names = products.map((product: { nom: string }) => product.nom);
         setProductNames(names);
       } catch (error) {
         console.error("Error fetching product names:", error);
@@ -76,15 +78,16 @@ export default function OrderForm({
 
   const handleImageUrlChange = (url: string) => {
     setImageUrl(url);
+    setIsNewImageUploaded(true);
   };
 
   const OnSubmit = async (data: OrderSchema) => {
-    if (!imageUrl) {
-      console.error("No image uploaded");
-    }
+    // If no new image is uploaded, keep the existing image
+    const finalImageUrl = isNewImageUploaded ? imageUrl : defaultValues.image || "";
+    
     await onSubmit({
       ...data,
-      image: imageUrl || "",
+      image: finalImageUrl || "",
     });
   };
 
@@ -142,7 +145,7 @@ export default function OrderForm({
                 <FormControl>
                   <Select
                     {...field}
-                    onValueChange={(value) => field.onChange(value)} // Update form value on select change
+                    onValueChange={(value) => field.onChange(value)}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select a product" />
@@ -203,7 +206,7 @@ export default function OrderForm({
               </FormItem>
             )}
           />
-          {/* Type input field */}
+
           <FormField
             control={form.control}
             name="selectedType"
@@ -211,14 +214,18 @@ export default function OrderForm({
               <FormItem>
                 <FormLabel>Type</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Select Type" />
+                  <Input
+                    {...field}
+                    placeholder="Select Type"
+                    value={field.value ?? ""}
+                    onChange={(e) => field.onChange(e.target.value)}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          {/* Base input field */}
           <FormField
             control={form.control}
             name="selectedBase"
@@ -251,7 +258,6 @@ export default function OrderForm({
             )}
           />
 
-          {/* Taille input field */}
           <FormField
             control={form.control}
             name="selectedTaille"
@@ -284,7 +290,6 @@ export default function OrderForm({
             )}
           />
 
-          {/* Barre input field */}
           <FormField
             control={form.control}
             name="selectedBarre"
@@ -292,7 +297,12 @@ export default function OrderForm({
               <FormItem>
                 <FormLabel>Barre</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Select Barre" />
+                  <Input
+                    {...field}
+                    placeholder="Select Barre"
+                    value={field.value ?? ""}
+                    onChange={(e) => field.onChange(e.target.value)}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -301,11 +311,22 @@ export default function OrderForm({
 
           <FormItem>
             <FormLabel>Image</FormLabel>
+            {defaultValues.image && !isNewImageUploaded && (
+              <div className="mb-2">
+                <Image 
+                  src={defaultValues.image} 
+                  alt="Existing Order Image" 
+                  width={100} 
+                  height={100} 
+                  className="rounded-md"
+                />
+              </div>
+            )}
             <ImageUploader onImageUrlChange={handleImageUrlChange} />
           </FormItem>
 
           <Button
-            disabled={!imageUrl || isSubmitting}
+            disabled={isSubmitting}
             className="w-full"
             type="submit"
           >

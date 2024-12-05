@@ -58,10 +58,17 @@ export const columns: ColumnDef<Order>[] = [
       header: "Image",
       cell: ({ row }) => (
         <div className="lowercase">
-          <img src={row.getValue("image")} alt="Product Image" style={{ width: '50px', height: '50px' }} />
+          {row.getValue("image") ? (
+            <img
+              src={row.getValue("image")}
+              alt="Product Image"
+              style={{ width: "50px", height: "50px" }}
+            />
+          ) : null}
         </div>
       ),
     },
+    
     {
         accessorKey: "name",
         header: "Name",

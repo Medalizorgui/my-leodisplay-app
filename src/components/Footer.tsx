@@ -5,7 +5,7 @@ import { Facebook } from 'lucide-react';
 export function Footer() {
   return (
     <div>
-    <footer className="py-12 px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64 bg-secondary text-secondary-foreground text-sm">
+    <footer className="py-12 px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64 bg-secondary text-secondary-foreground text-sm mt-3">
       <div className="flex items-center px-8 py-6">
         <h2 className="w-full text-2xl tracking-wide text-secondary-foreground">
           Nous sommes toujours à la recherche de nouveaux partenaires!

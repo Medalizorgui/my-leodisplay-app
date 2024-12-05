@@ -12,7 +12,7 @@ const OrderSchema = z.object({
   status: z.enum(["livree", "attente"], {
     message: "Status must be 'delivered' or 'pending'",
   }),
-  image: z.string().url({ message: "Image must be a valid URL" }),
+  image: z.string().optional(),
   qty: z
     .number()
     .int()
@@ -53,7 +53,7 @@ export const saveOrder = async (prevState: any, formData: FormData) => {
     await prisma.order.create({ data : {
       orderGroupId : validatedFields.data.orderGroupId,
       status : validatedFields.data.status,
-      image : validatedFields.data.image,
+      image : validatedFields.data.image ,
       qty : validatedFields.data.qty,
       email : validatedFields.data.email,
       name : validatedFields.data.name,
