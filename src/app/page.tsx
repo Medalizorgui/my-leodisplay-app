@@ -1,36 +1,27 @@
-import { PrismaClient } from "@prisma/client";
+
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
-import { ArrowDownToLine, CheckCircle, Leaf, ChevronRight } from 'lucide-react';
-import Link from "next/link";
-import { ProductCard } from "@/components/ProductCard";
-import { PerkCard } from "@/components/perkCard";
+import { PrismaClient } from "@prisma/client";
+import { ProductSection } from "@/components/ProductSection";
+import { AboutUsSection } from "@/components/AboutUsSection";
+import { PerksSection } from "@/components/PerkSection";
+import { ContactDialog } from "@/components/contactDialog";
+import { ChevronRight } from "lucide-react";
+import ProductCaller from "@/components/ProductCaller";
 
 const prisma = new PrismaClient();
 
 const fetchProducts = async () => {
-  const products = await prisma.product.findMany();
-  return products;
-};
-
-const perks = [
-  {
-    name: "Mise en place rapide et facile",
-    Icon: ArrowDownToLine,
-    description: "D'une façon générale les produits LEO DISPLAY sont conçus pour être transportés, montés et démontés par une seule personne."
-  },
-  {
-    name: "Visuel personnalisable",
-    Icon: CheckCircle,
-    description: "Tous vos visuels peuvent être traités et imprimés avec des supports dédiés pour chaque besoin et pour chaque support publicitaire."
-  },
-  {
-    name: "Dimension sur-mesure",
-    Icon: Leaf,
-    description: "À parts les dimensions standard que nous proposons, nous pouvons toutefois réaliser des supports sur-mesure qui s'adaptent à votre espace."
+  try {
+    const products = await prisma.product.findMany();
+    return products;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return [];
   }
-];
+};
 
 export default async function Home() {
   const products = await fetchProducts();
@@ -38,55 +29,52 @@ export default async function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
       <main className="container mx-auto px-4 py-12">
+        {/* Hero Section */}
         <section className="mb-16">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
-              <h1 className="text-5xl font-bold leading-tight" style={{ color: "hsl(47.9, 95.8%, 53.1%)" }}>
+              <h1 className="text-5xl font-bold leading-tight text-amber-500">
                 Bienvenue au LeoDisplay
               </h1>
               <p className="text-xl text-gray-600">
                 LEO DISPLAY est la première marque tunisienne qui fabrique des supports publicitaires 100% conçus et réalisés en Tunisie avec des normes européennes.
               </p>
-              <Button className="text-lg px-6 py-3" style={{ backgroundColor: "hsl(47.9, 95.8%, 53.1%)", color: "#fff" }}>
-                Découvrir nos produits <ChevronRight className="ml-2 h-5 w-5" />
-              </Button>
+              <div className="flex space-x-4">
+                <Button className="text-lg px-6 py-3 bg-amber-500 text-white hover:bg-amber-600">
+                  Découvrir nos produits <ChevronRight className="ml-2 h-5 w-5" />
+                </Button>
+                <ContactDialog />
+              </div>
             </div>
-            <div className="relative h-96 rounded-lg overflow-hidden shadow-2xl">
-              <Image
-                src="/gatous.jpg"
-                alt="LeoDisplay Showcase"
-                layout="fill"
-                objectFit="cover"
-                className="transition-transform duration-300 hover:scale-105"
-              />
-            </div>
+            <Carousel className="w-full max-w-lg">
+              <CarouselContent>
+                {products.map((product) => (
+                  <CarouselItem key={product.id}>
+                    <Card>
+                      <Image
+                        src={product.image || "/placeholder.jpg"}
+                        alt={product.nom}
+                        width={500}
+                        height={300}
+                        className="w-full h-80 object-cover rounded-t-lg"
+                      />
+                      <CardFooter className="p-4">
+                        <p className="text-center w-full">{product.nom}</p>
+                      </CardFooter>
+                    </Card>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
           </div>
         </section>
 
-        <section className="mb-16">
-          <h2 className="text-4xl font-bold mb-8 text-center" style={{ color: "hsl(47.9, 95.8%, 53.1%)" }}>Nos Produits</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.map((product) => (
-              <ProductCard key={product.id} product={{
-                id: product.id.toString(),
-                nom: product.nom,
-                description: product.description,
-                image: product.image,
-              }} />
-            ))}
-          </div>
-        </section>
-
-        <section>
-          <h2 className="text-4xl font-bold mb-12 text-center" style={{ color: "hsl(47.9, 95.8%, 53.1%)" }}>Nos Avantages</h2>
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {perks.map((perk) => (
-              <PerkCard key={perk.name} perk={perk} />
-            ))}
-          </div>
-        </section>
+        <ProductCaller products={products} />
+        <AboutUsSection />
+        <PerksSection />
       </main>
     </div>
   );
 }
-

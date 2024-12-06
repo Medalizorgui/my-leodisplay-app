@@ -1,12 +1,21 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  CardTitle 
+} from "@/components/ui/card";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogTrigger 
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Badge } from "@/components/ui/badge";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { PlusIcon, MinusIcon, ImageIcon } from "lucide-react";
 
 type ProductBaseProps = {
   baseData: Array<{
@@ -14,88 +23,88 @@ type ProductBaseProps = {
     name: string;
     image: string;
     price: number;
+    description?: string;
   }>;
   onQuantityChange: (id: string, quantity: number) => void;
 };
 
 export function ProductBase({ baseData, onQuantityChange }: ProductBaseProps) {
-  const [quantities, setQuantities] = useState<Record<string, number>>(
-    baseData.reduce((acc, base) => {
-      acc[base.id] = 0;
-      return acc;
-    }, {} as Record<string, number>)
-  );
+  const [selectedBases, setSelectedBases] = useState<{[key: string]: number}>({});
 
-  const handleIncrease = (id: string) => {
-    const newQuantity = quantities[id] + 1;
-    setQuantities((prev) => ({
+  const handleQuantityChange = (baseId: string, delta: number) => {
+    const currentQuantity = selectedBases[baseId] || 0;
+    const newQuantity = Math.max(0, currentQuantity + delta);
+    
+    setSelectedBases(prev => ({
       ...prev,
-      [id]: newQuantity,
+      [baseId]: newQuantity
     }));
-    onQuantityChange(id, newQuantity);
-  };
-
-  const handleDecrease = (id: string) => {
-    const newQuantity = Math.max(quantities[id] - 1, 0);
-    setQuantities((prev) => ({
-      ...prev,
-      [id]: newQuantity,
-    }));
-    onQuantityChange(id, newQuantity);
+    
+    onQuantityChange(baseId, newQuantity);
   };
 
   return (
-    <Accordion type="single" collapsible className="w-full">
-      <AccordionItem value="item-1" className="border-b">
-        <AccordionTrigger className="text-lg font-semibold">Base de produit</AccordionTrigger>
-        <AccordionContent className="pt-4">
-          <div>
-            <h3 className="text-lg font-semibold">Nos Bases</h3>
-            {baseData.map((base) => (
-              <div
-                key={base.id}
-                className="flex items-center space-x-4 p-4 border rounded-lg mb-4 hover:bg-gray-50 transition-colors"
-              >
-                <div className="relative w-24 h-24">
-                  <Image
-                    src={base.image}
-                    alt={base.name}
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-md"
-                  />
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline" className="w-full">
+          <ImageIcon className="mr-2 h-4 w-4" /> Customize Base
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-2xl">
+        <DialogHeader>
+          <DialogTitle>Select Product Bases</DialogTitle>
+        </DialogHeader>
+        <div className="grid md:grid-cols-2 gap-4">
+          {baseData.map((base) => (
+            <Card key={base.id} className="hover:shadow-lg transition-shadow">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4">
+                <div className="space-y-1">
+                  <CardTitle>{base.name}</CardTitle>
+                  <Badge variant="secondary">${base.price.toFixed(2)}</Badge>
                 </div>
-                <div className="flex-grow">
-                  <h3 className="font-semibold text-lg">{base.name}</h3>
-                  <p className="font-bold mt-2 text-primary">${base.price.toFixed(2)}</p>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => handleDecrease(base.id)}
-                    className="h-8 w-8"
+                <HoverCard>
+                  <HoverCardTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                      <ImageIcon className="h-4 w-4" />
+                    </Button>
+                  </HoverCardTrigger>
+                  <HoverCardContent>
+                    <img 
+                      src={base.image} 
+                      alt={base.name} 
+                      className="rounded-md max-w-[200px]" 
+                    />
+                  </HoverCardContent>
+                </HoverCard>
+              </CardHeader>
+              <CardContent>
+                {base.description && (
+                  <p className="text-sm text-muted-foreground mb-2">
+                    {base.description}
+                  </p>
+                )}
+                <div className="flex items-center justify-between">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => handleQuantityChange(base.id, -1)}
                   >
-                    -
+                    <MinusIcon className="h-4 w-4" />
                   </Button>
-                  <span className="w-8 text-center text-lg">
-                    {quantities[base.id]}
-                  </span>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => handleIncrease(base.id)}
-                    className="h-8 w-8"
+                  <span>{selectedBases[base.id] || 0}</span>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => handleQuantityChange(base.id, 1)}
                   >
-                    +
+                    <PlusIcon className="h-4 w-4" />
                   </Button>
                 </div>
-              </div>
-            ))}
-          </div>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }
-

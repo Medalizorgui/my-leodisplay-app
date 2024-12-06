@@ -100,7 +100,7 @@ const UploadImageComponent: React.FC<UploadComponentProps> = ({ onUploadComplete
             <img src={previewImage} alt="Uploaded preview" className="w-48 h-48 object-cover rounded-md mb-4" />
             {isUploading && (
               <div className='flex flex-col items-center mt-4'>
-                <p>Uploading...</p>
+                <p>Telechargement...</p>
                 <Progress
                   value={uploadProgress}
                   className='mt-2 w-40 h-2 bg-gray-300'
@@ -113,13 +113,13 @@ const UploadImageComponent: React.FC<UploadComponentProps> = ({ onUploadComplete
                   className="px-4 py-2 bg-blue-500 text-white rounded-md"
                   onClick={handleUpload}
                 >
-                  Upload Image
+                  Telecharger Image
                 </button>
                 <button
                   className="px-4 py-2 bg-red-500 text-white rounded-md flex items-center"
                   onClick={handleDelete}
                 >
-                  <Trash2 className='mr-2 h-4 w-4' /> Delete
+                  <Trash2 className='mr-2 h-4 w-4' /> Effacer
                 </button>
               </div>
             )}
@@ -159,18 +159,18 @@ const UploadImageComponent: React.FC<UploadComponentProps> = ({ onUploadComplete
                     </div>
                   ) : isDragOver ? (
                     <p>
-                      <span className='font-semibold'>Drop file</span> to upload
+                      <span className='font-semibold'>Telecharger</span> une image
                     </p>
                   ) : (
                     <p>
-                      <span className='font-semibold'>Click to upload</span> or
-                      drag and drop
+                      <span className='font-semibold'>Clicker pour telecharger</span> ou
+                      glisser-déposer
                     </p>
                   )}
                 </div>
               </div>
             )}
-          </Dropzone>
+          </Dropzone> 
         )}
       </div>
     </div>
