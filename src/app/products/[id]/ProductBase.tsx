@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { PlusIcon, MinusIcon, ImageIcon } from "lucide-react";
 
 type ProductBaseProps = {
@@ -62,22 +61,13 @@ export function ProductBase({ baseData, onQuantityChange }: ProductBaseProps) {
                   <CardTitle>{base.name}</CardTitle>
                   <Badge variant="secondary">${base.price.toFixed(2)}</Badge>
                 </div>
-                <HoverCard>
-                  <HoverCardTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                      <ImageIcon className="h-4 w-4" />
-                    </Button>
-                  </HoverCardTrigger>
-                  <HoverCardContent>
-                    <img 
-                      src={base.image} 
-                      alt={base.name} 
-                      className="rounded-md max-w-[200px]" 
-                    />
-                  </HoverCardContent>
-                </HoverCard>
               </CardHeader>
               <CardContent>
+                <img 
+                  src={base.image} 
+                  alt={base.name} 
+                  className="w-full h-48 object-cover rounded-md mb-2" 
+                />
                 {base.description && (
                   <p className="text-sm text-muted-foreground mb-2">
                     {base.description}
