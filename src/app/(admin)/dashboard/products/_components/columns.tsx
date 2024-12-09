@@ -82,7 +82,7 @@ export const columns: ColumnDef<ExtendedProduct>[] = [
     header: () => <div className="text-right">Prix</div>,
     cell: ({ row }) => {
       return (
-        <div className="text-right font-medium">{row.getValue("prix")}</div>
+        <div className="text-right font-medium">{row.getValue("prix")}TND</div>
       );
     },
   },
@@ -117,7 +117,7 @@ export const columns: ColumnDef<ExtendedProduct>[] = [
             bases.map((base, index) => (
               <div key={index} className="flex items-center gap-2">
                 <img src={base.image} alt={base.name} className="w-8 h-8 rounded" />
-                <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">{base.name} - ${base.price}</span>
+                <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">{base.name} - {base.price}TND</span>
               </div>
             ))
           ) : (
@@ -139,7 +139,7 @@ export const columns: ColumnDef<ExtendedProduct>[] = [
             tailles.map((taille, index) => (
               <div key={index} className="flex items-center gap-2">
                 <img src={taille.image} alt={taille.name} className="w-8 h-8 rounded" />
-                <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">{taille.name} - ${taille.price}</span>
+                <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">{taille.name} - {taille.price}TND</span>
               </div>
             ))
           ) : (

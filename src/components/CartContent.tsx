@@ -69,8 +69,8 @@ export function CartContent() {
                           Tailles:
                           {item.tailles.map((taille) => (
                             <p key={taille.id}>
-                              {taille.name} - Qty: {taille.quantity} ($
-                              {taille.price.toFixed(2)})
+                              {taille.name} - Qty: {taille.quantity} (
+                              {taille.price.toFixed(2)}TND)
                             </p>
                           ))}
                         </div>
@@ -81,8 +81,8 @@ export function CartContent() {
                           Bases:
                           {item.bases.map((base) => (
                             <p key={base.id}>
-                              {base.name} - Qty: {base.quantity} ($
-                              {base.price.toFixed(2)})
+                              {base.name} - Qty: {base.quantity} (
+                              {base.price.toFixed(2)}TND)
                             </p>
                           ))}
                         </div>
@@ -121,7 +121,7 @@ export function CartContent() {
 
         <div className="mt-4 flex justify-between items-center">
           <p className="font-bold">Total:</p>
-          <p className="text-xl font-bold">${total.toFixed(2)}</p>
+          <p className="text-xl font-bold">{total.toFixed(2)}TND</p>
         </div>
 
         <Button

@@ -30,7 +30,7 @@ const AddToCartButton = ({ order }: AddToCartButtonProps) => {
       onClick={handleAddToCart}
       disabled={isAdding}
     >
-      {isAdding ? "Adding..." : "Add to Cart"}
+      {isAdding ? "Ajout..." : "Ajouter au pannier"}
     </Button>
   );
 };

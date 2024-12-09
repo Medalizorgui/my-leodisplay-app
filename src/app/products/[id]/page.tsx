@@ -93,7 +93,7 @@ export default async function ProductPage({
 
                   <div className="flex items-center justify-between">
                     <span className="text-3xl font-bold text-primary">
-                      ${parseFloat(prix).toFixed(2)}
+                      {parseFloat(prix).toFixed(2)}TND
                     </span>
                   </div>
                 </div>

@@ -44,7 +44,7 @@ export function CartItemComponent({ item }: { item: CartItem }) {
           <h3 className="text-lg font-semibold">{item.productName}</h3>
           {item.type && <p className="text-sm text-gray-600">Type: {item.type}</p>}
           {item.barre && <p className="text-sm text-gray-600">Barre: {item.barre}</p>}
-          <p className="text-sm text-gray-600">Base Price: ${item.basePrice.toFixed(2)}</p>
+          <p className="text-sm text-gray-600">Base Price: {item.basePrice.toFixed(2)}TND</p>
           
           {item.tailles.length > 0 && (
             <div className="mt-2">
@@ -52,7 +52,7 @@ export function CartItemComponent({ item }: { item: CartItem }) {
               <ul className="list-disc list-inside">
                 {item.tailles.map((taille) => (
                   <li key={taille.id} className="text-sm">
-                    {taille.name}: ${taille.price.toFixed(2)} (x{taille.quantity})
+                    {taille.name}: {taille.price.toFixed(2)}TND (x{taille.quantity})
                   </li>
                 ))}
               </ul>
@@ -65,7 +65,7 @@ export function CartItemComponent({ item }: { item: CartItem }) {
               <ul className="list-disc list-inside">
                 {item.bases.map((base) => (
                   <li key={base.id} className="text-sm">
-                    {base.name}: ${base.price.toFixed(2)} (x{base.quantity})
+                    {base.name}: {base.price.toFixed(2)}TND (x{base.quantity})
                   </li>
                 ))}
               </ul>
@@ -74,7 +74,7 @@ export function CartItemComponent({ item }: { item: CartItem }) {
         </div>
         
         <div className="flex flex-col items-end gap-2">
-          <p className="text-lg font-semibold">${calculateItemTotal().toFixed(2)}</p>
+          <p className="text-lg font-semibold">{calculateItemTotal().toFixed(2)}TND</p>
           
           <div className="flex items-center space-x-2">
             <Button 

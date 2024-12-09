@@ -316,30 +316,33 @@ export default function ClientComponent({
         </div>
         {/* Conditional Button */}
         <div className="mt-6">
-          {isAuthenticated ? (
-            <AddToCartButton
-              order={{
-                productId: selectedOptions.productId,
-                productName: selectedOptions.productName,
-                basePrice: selectedOptions.basePrice,
-                type: selectedOptions.type,
-                barre: selectedOptions.barre,
-                tailles: selectedOptions.tailles,
-                bases: selectedOptions.bases,
-                quantity: selectedOptions.quantity,
-                uploadedImageUrl: selectedOptions.uploadedImageUrl,
-              }}
-            />
-          ) : (
-            <Button
-              onClick={handleLoginClick}
-              className="w-full"
-              variant="default"
-            >
-              <ShoppingCart className="mr-2 h-4 w-4" /> Se Connecter
-            </Button>
-          )}
-        </div>
+  {isAuthenticated ? (
+    
+      <AddToCartButton
+        order={{
+          productId: selectedOptions?.productId,
+          productName: selectedOptions?.productName,
+          basePrice: selectedOptions?.basePrice,
+          type: selectedOptions?.type,
+          barre: selectedOptions?.barre,
+          tailles: selectedOptions?.tailles,
+          bases: selectedOptions?.bases,
+          quantity: selectedOptions?.quantity,
+          uploadedImageUrl: selectedOptions?.uploadedImageUrl,
+        }}
+      />
+  ) : (
+    <Button
+      onClick={handleLoginClick}
+      className="w-full"
+      variant="default"
+    >
+      <ShoppingCart className="mr-2 h-4 w-4" /> Se Connecter
+    </Button>
+  )}
+</div>
+
+
       </CardContent>
     </Card>
   );

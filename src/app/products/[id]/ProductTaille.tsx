@@ -1,46 +1,53 @@
 import React, { useState } from "react";
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  CardTitle 
-} from "@/components/ui/card";
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogTrigger 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Image as LucideImage, FileText, Download } from "lucide-react";
+import {
+  PlusIcon,
+  MinusIcon,
+  Image as LucideImage,
+  FileText,
+  Download,
+} from "lucide-react";
 
 type ProductTailleProps = {
   tailleData: Array<{
+    id: string;
     name: string;
+    image: string;
     price: number;
     productId: string;
-    image: string;
     downloadLinks?: string[];
     ficheTechniqueLink?: string;
   }>;
   onQuantityChange: (id: string, quantity: number) => void;
 };
 
-export function ProductTaille({ tailleData, onQuantityChange }: ProductTailleProps) {
-  const [selectedTailles, setSelectedTailles] = useState<{[key: string]: number}>({});
+export function ProductTaille({
+  tailleData,
+  onQuantityChange,
+}: ProductTailleProps) {
+  const [selectedTailles, setSelectedTailles] = useState<{
+    [key: string]: number;
+  }>({});
 
-  const handleQuantityChange = (productId: string, delta: number) => {
-    const currentQuantity = selectedTailles[productId] || 0;
+  const handleQuantityChange = (tailleId: string, delta: number) => {
+    const currentQuantity = selectedTailles[tailleId] || 0;
     const newQuantity = Math.max(0, currentQuantity + delta);
-    
-    setSelectedTailles(prev => ({
+
+    setSelectedTailles((prev) => ({
       ...prev,
-      [productId]: newQuantity
+      [tailleId]: newQuantity,
     }));
-    
-    onQuantityChange(productId, newQuantity);
+
+    onQuantityChange(tailleId, newQuantity);
   };
 
   return (
@@ -56,55 +63,62 @@ export function ProductTaille({ tailleData, onQuantityChange }: ProductTaillePro
         </DialogHeader>
         <div className="grid md:grid-cols-2 gap-4 h-[30rem] overflow-y-auto">
           {tailleData.map((taille) => (
-            <Card key={taille.name} className="hover:shadow-lg transition-shadow">
+            <Card key={taille.id} className="hover:shadow-lg transition-shadow">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4">
                 <div className="space-y-1">
                   <CardTitle>{taille.name}</CardTitle>
-                  <Badge variant="secondary">${taille.price.toFixed(2)}</Badge>
+                  <Badge variant="secondary">
+                    {taille.price.toFixed(2)}TND
+                  </Badge>
                 </div>
               </CardHeader>
               <CardContent>
-                <img 
-                  src={taille.image} 
-                  alt={taille.name} 
-                  className="w-full h-48 object-cover rounded-md mb-2" 
+                <img
+                  src={taille.image}
+                  alt={taille.name}
+                  className="w-full h-48 object-cover rounded-md mb-2"
                 />
                 <div className="flex items-center justify-between mb-2">
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     size="sm"
-                    onClick={() => handleQuantityChange(taille.productId, -1)}
+                    onClick={() => handleQuantityChange(taille.id, -1)}
                   >
-                    -
+                    <MinusIcon className="h-4 w-4" />
                   </Button>
-                  <span>{selectedTailles[taille.productId] || 0}</span>
-                  <Button 
-                    variant="outline" 
+                  <span>{selectedTailles[taille.id] || 0}</span>
+                  <Button
+                    variant="outline"
                     size="sm"
-                    onClick={() => handleQuantityChange(taille.productId, 1)}
+                    onClick={() => handleQuantityChange(taille.id, 1)}
                   >
-                    +
+                    <PlusIcon className="h-4 w-4" />
                   </Button>
                 </div>
                 <div className="flex flex-col space-y-2">
-                  {taille.downloadLinks && taille.downloadLinks.length > 0 && (
-                    taille.downloadLinks!.map((link, index) => (
-                      <a 
-                        key={index}
-                        href={link} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="flex items-center text-blue-600 hover:underline text-xs"
-                      >
-                        <Download className="h-4 w-4 mr-1" /> 
-                        {taille.name} {taille.downloadLinks!.length > 1 ? `${index + 1}` : ''}
-                      </a>
-                    ))
-                  )}
+                  {taille.downloadLinks?.length &&
+                  taille.downloadLinks.length > 0
+                    ? taille.downloadLinks.map((link, index) => (
+                        <a
+                          key={index}
+                          href={link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center text-blue-600 hover:underline text-xs"
+                        >
+                          <Download className="h-4 w-4 mr-1" />
+                          {taille.name}{" "}
+                          {taille.downloadLinks?.length &&
+                          taille.downloadLinks.length > 1
+                            ? `${index + 1}`
+                            : ""}
+                        </a>
+                      ))
+                    : null}
                   {taille.ficheTechniqueLink && (
-                    <a 
-                      href={taille.ficheTechniqueLink} 
-                      target="_blank" 
+                    <a
+                      href={taille.ficheTechniqueLink}
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center text-green-600 hover:underline text-xs"
                     >

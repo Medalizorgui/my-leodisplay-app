@@ -53,13 +53,13 @@ export function ProductBase({ baseData, onQuantityChange }: ProductBaseProps) {
         <DialogHeader>
           <DialogTitle>Select Product Bases</DialogTitle>
         </DialogHeader>
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-2 gap-4 h-[30rem] overflow-y-auto">
           {baseData.map((base) => (
             <Card key={base.id} className="hover:shadow-lg transition-shadow">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4">
                 <div className="space-y-1">
                   <CardTitle>{base.name}</CardTitle>
-                  <Badge variant="secondary">${base.price.toFixed(2)}</Badge>
+                  <Badge variant="secondary">{base.price.toFixed(2)}TND</Badge>
                 </div>
               </CardHeader>
               <CardContent>
