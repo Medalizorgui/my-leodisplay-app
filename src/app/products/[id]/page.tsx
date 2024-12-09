@@ -103,8 +103,8 @@ export default async function ProductPage({
                   productId={id}
                   productName={nom}
                   productPrice={parseFloat(prix)}
-                  type={type ? [type] : []}
-                  barre={barre ? [barre] : []}
+                  type={type}
+                  barre={barre}
                   base={bases}
                   taille={tailles}
                 />

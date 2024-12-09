@@ -9,11 +9,11 @@ import { useState } from 'react'
 import Dropzone, { FileRejection } from 'react-dropzone'
 
 interface UploadComponentProps {
-  onUploadComplete: (url: string) => void;
+  onImageUrlChange: (url: string) => void;
   className?: string;
 }
 
-const UploadImageComponent: React.FC<UploadComponentProps> = ({ onUploadComplete }) => {
+const UploadImageComponent: React.FC<UploadComponentProps> = ({ onImageUrlChange }) => {
   const { toast } = useToast()
   const [isDragOver, setIsDragOver] = useState<boolean>(false)
   const [uploadProgress, setUploadProgress] = useState<number>(0)
@@ -26,8 +26,7 @@ const UploadImageComponent: React.FC<UploadComponentProps> = ({ onUploadComplete
       const uploadedImageUrl = data.url;
 
       if (uploadedImageUrl) {
-        onUploadComplete(uploadedImageUrl);
-        console.log(uploadedImageUrl);
+        onImageUrlChange(uploadedImageUrl);
 
         toast({
           title: 'Upload Successful',
@@ -67,7 +66,8 @@ const UploadImageComponent: React.FC<UploadComponentProps> = ({ onUploadComplete
     setIsConfirmed(false)
   }
 
-  const handleUpload = () => {
+  const handleUpload = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (selectedFile) {
       startUpload([selectedFile], { configId: 'imageUploader' })
     } else {
@@ -110,12 +110,14 @@ const UploadImageComponent: React.FC<UploadComponentProps> = ({ onUploadComplete
             {!isConfirmed && (
               <div className='flex space-x-4'>
                 <button
+                  type='button'
                   className="px-4 py-2 bg-blue-500 text-white rounded-md"
                   onClick={handleUpload}
                 >
                   Telecharger Image
                 </button>
                 <button
+                  type='button'
                   className="px-4 py-2 bg-red-500 text-white rounded-md flex items-center"
                   onClick={handleDelete}
                 >

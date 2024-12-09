@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useToast } from '@/hooks/use-toast'
 import UploadImageComponent from '@/components/image-upload';
 
 interface ImageUploaderProps {
@@ -26,9 +25,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageUrlChange }) => {
   return (
     <div>
       {/* Image upload component */}
-      <UploadImageComponent onUploadComplete={handleImageUpload} />
-      
-      
+      <UploadImageComponent onImageUrlChange={handleImageUpload} />
     </div>
   )
 }
