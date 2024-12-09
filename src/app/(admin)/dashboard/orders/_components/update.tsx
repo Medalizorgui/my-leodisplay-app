@@ -98,6 +98,7 @@ export default function UpdateOrder({ order }: { order: Order & { id: number } }
                         tailleQuantity: order.tailleQuantity || 0,
                         selectedBarre: order.selectedBarre || "",
                         image: order.image || "",
+                        price: order.price || "0"
                     }}
                     onSubmit={onSubmit}
                     submitButtonText="Update Order"

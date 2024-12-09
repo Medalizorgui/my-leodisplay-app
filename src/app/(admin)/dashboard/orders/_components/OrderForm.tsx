@@ -124,12 +124,12 @@ export default function OrderForm({
           />
           <FormField
             control={form.control}
-            name="orderGroupId"
+            name="price"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>orderGroupId</FormLabel>
+                <FormLabel>prix</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="order group id..." />
+                  <Input {...field} placeholder="price" />
                 </FormControl>
                 <FormMessage />
               </FormItem>

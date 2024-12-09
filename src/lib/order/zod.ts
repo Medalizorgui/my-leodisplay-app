@@ -14,6 +14,7 @@ export const orderSchema = z.object({
     selectedTaille: z.string().optional(),
     tailleQuantity: z.number().int().optional(),
     selectedBarre: z.string().nullable(),
+    price: z.string().optional(),
 });
 
 export type OrderSchema = z.infer<typeof orderSchema>;

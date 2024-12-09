@@ -52,6 +52,7 @@ export function Checkout() {
             email: session?.user?.email || '', // You might want to get this from user context or input
             name: session?.user?.name || '', // You might want to get this from user context or input
             orderGroupId: item.productId,
+            price: total.toString(),
           })
         });
 

@@ -30,6 +30,7 @@ const OrderSchema = z.object({
   selectedBarre: z
     .string()
     .min(1, { message: "Product barre selection is required" }).optional(),
+  price : z.string().optional(),
 });
 
 export const saveOrder = async (prevState: any, formData: FormData) => {
@@ -64,6 +65,7 @@ export const saveOrder = async (prevState: any, formData: FormData) => {
       baseQuantity : validatedFields.data.baseQuantity,
       selectedTailleName : validatedFields.data.selectedTaille,
       tailleQuantity : validatedFields.data.tailleQuantity,
+      price: validatedFields.data.price,
 
     }});
   } catch (error) {

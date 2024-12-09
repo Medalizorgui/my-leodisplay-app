@@ -37,6 +37,7 @@ export default function InvoiceContent({ order, closeDialog }: { order: any; clo
             doc.text(`Selected Taille: ${order.selectedTaille}`, 20, 190);
             doc.text(`quantite de taille: ${order.tailleQuantity}`, 20, 200);
             doc.text(`Selected Barre: ${order.selectedBarre}`, 20, 210);
+            doc.text(`Prix: ${order.price}`,20,220);
 
             // Save the PDF
             doc.save(`invoice_${order.id}.pdf`);
@@ -90,6 +91,9 @@ export default function InvoiceContent({ order, closeDialog }: { order: any; clo
                 </p>
                 <p>
                     <strong>Selected Barre:</strong> {order.selectedBarre}
+                </p>
+                <p>
+                    <strong>Prix:</strong> {order.price}
                 </p>
             </div>
             <Button

@@ -60,6 +60,7 @@ model Order {
   name           String   // FK from Customer's name
   productNom     String   // FK from Product.nom
   orderDate      DateTime @default(now()) // Added order date with default to current timestamp
+  price          String?
 
   // Fields to store specific selections
   selectedBaseName   String?     

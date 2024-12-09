@@ -47,10 +47,10 @@ export const columns: ColumnDef<Order>[] = [
       ),
     },
     {
-      accessorKey: "orderGroupId",  // New Column for Order Group ID
-      header: "Order Group ID",
+      accessorKey: "price",  // New Column for Order Group ID
+      header: "prix",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("orderGroupId")}</div>
+        <div className="capitalize">{row.getValue("price")}TND</div>
       ),
     },
     {

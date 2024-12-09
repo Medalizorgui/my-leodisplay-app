@@ -38,6 +38,7 @@ export async function POST(request: NextRequest) {
         selectedTailleName: parsedData.selectedTaille || "",
         tailleQuantity : parsedData.tailleQuantity || 0,
         selectedBarre: parsedData.selectedBarre || null,
+        price: parsedData.price || "",
       },
     });
     return NextResponse.json(order, { status: 201 });
@@ -107,6 +108,7 @@ export async function PUT(request: NextRequest) {
         selectedTailleName: parsedData.selectedTaille,
         tailleQuantity : parsedData.tailleQuantity,
         selectedBarre: parsedData.selectedBarre,
+        price: parsedData.price,
       },
     });
     return NextResponse.json(updatedOrder, { status: 200 });

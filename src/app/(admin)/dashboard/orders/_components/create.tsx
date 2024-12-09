@@ -35,6 +35,7 @@ export default function CreateOrder() {
       selectedTaille: "",
       tailleQuantity: 0,
       selectedBarre: "",
+      price: "0",
     },
   });
 
@@ -107,6 +108,7 @@ export default function CreateOrder() {
             selectedTaille:"",
             tailleQuantity: 0,
             selectedBarre: "",
+            price: "0",
           }} // Pass defaultValues to OrderForm
           onSubmit={onSubmit}
           submitButtonText="Create"
